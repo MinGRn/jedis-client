@@ -77,7 +77,7 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
     }
 
     @Override
-    public Long expireOfMillis(String key, long milliseconds) {
+    public Long expireInMillis(String key, long milliseconds) {
         Jedis jedis = null;
         try {
             jedis = AbstractJedisConfig.acquireResource();
@@ -129,7 +129,7 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
     }
 
     @Override
-    public Long ttlOfMillis(String key) {
+    public Long ttlInMillis(String key) {
         Jedis jedis = null;
         try {
             jedis = AbstractJedisConfig.acquireResource();

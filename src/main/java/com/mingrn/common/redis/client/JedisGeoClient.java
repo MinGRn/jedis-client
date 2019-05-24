@@ -162,4 +162,17 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
             AbstractJedisConfig.releaseResource(jedis);
         }
     }
+
+    @Override
+    public List<String> geoHash(String key, String... members) {
+        Jedis jedis = null;
+        try {
+            jedis = AbstractJedisConfig.acquireResource();
+            return jedis.geohash(key, members);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            AbstractJedisConfig.releaseResource(jedis);
+        }
+    }
 }

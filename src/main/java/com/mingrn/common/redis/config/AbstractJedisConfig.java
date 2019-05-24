@@ -3,6 +3,7 @@ package com.mingrn.common.redis.config;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.JedisSentinelPool;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import java.io.IOException;
@@ -46,6 +47,8 @@ import java.util.Properties;
 public abstract class AbstractJedisConfig {
 
     protected static JedisPool jedisPool;
+
+    protected static JedisSentinelPool jedisSentinelPool;
 
     /**
      * acquire redis resource

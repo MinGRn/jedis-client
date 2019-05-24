@@ -62,7 +62,7 @@ public interface BaseJedisRepository {
      * @param milliseconds 超时(过期)时间,单位毫秒.若设置负值键会立即删除
      * @return 1:设置成功 0:键不存在
      */
-    Long expireOfMillis(String key, long milliseconds);
+    Long expireInMillis(String key, long milliseconds);
 
     /**
      * 键设置过期时间戳,毫秒级
@@ -95,7 +95,7 @@ public interface BaseJedisRepository {
      * @param key 键
      * @return -1: 键未设置过期时间 -2:键不存在 >0:剩余过期时间(秒级)
      */
-    Long ttlOfMillis(String key);
+    Long ttlInMillis(String key);
 
     /**
      * 查看键是否存在

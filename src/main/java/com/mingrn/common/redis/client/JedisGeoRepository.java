@@ -128,4 +128,15 @@ public interface JedisGeoRepository extends BaseJedisRepository {
 	 * @return {@link GeoRadiusResponse} 半径内的成员列表
 	 */
 	List<GeoRadiusResponse> geoRadiusByMember(String key, String member, double radius, GeoUnit unit, GeoRadiusParam withParam);
+
+	/**
+	 * 获取指定成员的经纬度 Hash 值
+	 * <p>
+	 * Hash 值越长表示的经纬度越精确,即两个成员之间的精确距离可以通过 Hash 的长度进行得知.
+	 * 一般经纬度应该精确到小数点后8位
+	 *
+	 * @param key     键
+	 * @param members 成员
+	 */
+	List<String> geoHash(String key, String... members);
 }

@@ -1,6 +1,7 @@
 import com.mingrn.common.redis.client.JedisGeoClient;
 import redis.clients.jedis.GeoCoordinate;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisSentinelPool;
 
 import java.util.Properties;
 

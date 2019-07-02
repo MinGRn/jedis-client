@@ -6,6 +6,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Transaction;
 import redis.clients.jedis.exceptions.JedisException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,6 +48,11 @@ public class JedisLock {
      */
     private final static long TRY_LOCK_TIMEOUT_IN_MILLISECONDS = 5 * 60 * 1000;
 
+    private static final Long RELEASE_SUCCESS = 1L;
+    private static final String LOCK_SUCCESS = "OK";
+    private static final String SET_IF_NOT_EXIST = "NX";
+    private static final String SET_WITH_EXPIRE_TIME = "PX";
+
     /**
      * @param jedisPool Jedis 线程池
      */
@@ -74,7 +80,7 @@ public class JedisLock {
      * @param lockKey 锁Key
      * @return value of key
      */
-    public String tryLockWithWaiting(String lockKey) {
+    /*public String tryLockWithWaiting(String lockKey) {
         Jedis jedis = null;
         String identify = null;
         try {
@@ -102,7 +108,7 @@ public class JedisLock {
             AbstractJedisConfig.releaseResource(jedis);
         }
         return identify;
-    }
+    }*/
 
     /**
      * 获取锁, No Waiting !
@@ -110,7 +116,7 @@ public class JedisLock {
      * @param lockKey 锁Key
      * @return value of key
      */
-    public String tryLockWithNoWaiting(String lockKey) {
+    /*public String tryLockWithNoWaiting(String lockKey) {
         Jedis jedis = null;
         String identify = null;
         try {
@@ -129,7 +135,7 @@ public class JedisLock {
             AbstractJedisConfig.releaseResource(jedis);
         }
         return identify;
-    }
+    }*/
 
 
     /**
@@ -139,7 +145,7 @@ public class JedisLock {
      * @param identify 锁Value
      * @return lock is release or not
      */
-    public boolean releaseLock(String lockKey, String identify) {
+    /*public boolean releaseLock(String lockKey, String identify) {
         Jedis jedis = null;
         boolean isRelease = false;
         try {
@@ -164,5 +170,70 @@ public class JedisLock {
             AbstractJedisConfig.releaseResource(jedis);
         }
         return isRelease;
+    }*/
+
+    /**
+     * 获取分布式锁
+     *
+     * @param lockKey   锁
+     * @param requestId 请求标识
+     * @return 是否获取成功
+     */
+    public boolean tryGetDistributedLock(String lockKey, String requestId) {
+        String result;
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            result = jedis.set(lockKey, requestId, SET_IF_NOT_EXIST);
+        } catch (JedisException e) {
+            throw new JedisException(e);
+        } finally {
+            AbstractJedisConfig.releaseResource(jedis);
+        }
+        return LOCK_SUCCESS.equals(result);
+    }
+
+    /**
+     * 获取分布式锁
+     *
+     * @param lockKey    锁
+     * @param requestId  请求标识
+     * @param expireTime 超期时间
+     * @return 是否获取成功
+     */
+    public boolean tryGetDistributedLock(String lockKey, String requestId, int expireTime) {
+        String result;
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            result = jedis.set(lockKey, requestId, SET_IF_NOT_EXIST, SET_WITH_EXPIRE_TIME, expireTime);
+        } catch (JedisException e){
+            throw new JedisException(e);
+        } finally {
+            AbstractJedisConfig.releaseResource(jedis);
+        }
+        return LOCK_SUCCESS.equals(result);
+    }
+
+    /**
+     * 释放分布式锁
+     *
+     * @param lockKey   锁
+     * @param requestId 请求标识
+     * @return 是否释放成功
+     */
+    public boolean releaseDistributedLock(String lockKey, String requestId) {
+        Object result;
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+            result = jedis.eval(script, Collections.singletonList(lockKey), Collections.singletonList(requestId));
+        } catch (JedisException e) {
+            throw new JedisException(e);
+        } finally {
+            AbstractJedisConfig.releaseResource(jedis);
+        }
+        return RELEASE_SUCCESS.equals(result);
     }
 }

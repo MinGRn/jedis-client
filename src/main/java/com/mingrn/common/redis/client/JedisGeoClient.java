@@ -1,7 +1,7 @@
 package com.mingrn.common.redis.client;
 
 import com.mingrn.common.redis.client.base.BaseJedisClient;
-import com.mingrn.common.redis.config.AbstractJedisConfig;
+import com.mingrn.common.redis.config.JedisPoolConfig;
 import redis.clients.jedis.GeoCoordinate;
 import redis.clients.jedis.GeoRadiusResponse;
 import redis.clients.jedis.GeoUnit;
@@ -10,6 +10,7 @@ import redis.clients.jedis.params.geo.GeoRadiusParam;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Redis GEO API
@@ -32,12 +33,12 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
     public Long geoAdd(String key, Double longitude, Double latitude, String member) {
         Jedis jedis = null;
         try {
-            jedis = AbstractJedisConfig.acquireResource();
+            jedis = JedisPoolConfig.acquireResource();
             return jedis.geoadd(key, longitude, latitude, member);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
         }
     }
 
@@ -45,12 +46,12 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
     public Long geoAdd(String key, Map<String, GeoCoordinate> memberCoordinateMap) {
         Jedis jedis = null;
         try {
-            jedis = AbstractJedisConfig.acquireResource();
+            jedis = JedisPoolConfig.acquireResource();
             return jedis.geoadd(key, memberCoordinateMap);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
         }
     }
 
@@ -58,7 +59,7 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
     public GeoCoordinate geoPos(String key, String member) {
         Jedis jedis = null;
         try {
-            jedis = AbstractJedisConfig.acquireResource();
+            jedis = JedisPoolConfig.acquireResource();
             List<GeoCoordinate> geopos = jedis.geopos(key, member);
             if (geopos.size() > 0) {
                 return geopos.get(0);
@@ -68,7 +69,7 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
         }
     }
 
@@ -76,12 +77,12 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
     public List<GeoCoordinate> geoPos(String key, String... members) {
         Jedis jedis = null;
         try {
-            jedis = AbstractJedisConfig.acquireResource();
+            jedis = JedisPoolConfig.acquireResource();
             return jedis.geopos(key, members);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
         }
     }
 
@@ -89,12 +90,12 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
     public Double geoDist(String key, String member1, String member2) {
         Jedis jedis = null;
         try {
-            jedis = AbstractJedisConfig.acquireResource();
+            jedis = JedisPoolConfig.acquireResource();
             return jedis.geodist(key, member1, member2);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
         }
     }
 
@@ -102,12 +103,12 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
     public Double geoDist(String key, String member1, String member2, GeoUnit unit) {
         Jedis jedis = null;
         try {
-            jedis = AbstractJedisConfig.acquireResource();
+            jedis = JedisPoolConfig.acquireResource();
             return jedis.geodist(key, member1, member2, unit);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
         }
     }
 
@@ -115,12 +116,12 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
     public List<GeoRadiusResponse> geoRadius(String key, double longitude, double latitude, double radius, GeoUnit unit) {
         Jedis jedis = null;
         try {
-            jedis = AbstractJedisConfig.acquireResource();
+            jedis = JedisPoolConfig.acquireResource();
             return jedis.georadius(key, longitude, latitude, radius, unit);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
         }
     }
 
@@ -128,12 +129,12 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
     public List<GeoRadiusResponse> geoRadius(String key, double longitude, double latitude, double radius, GeoUnit unit, GeoRadiusParam withParam) {
         Jedis jedis = null;
         try {
-            jedis = AbstractJedisConfig.acquireResource();
+            jedis = JedisPoolConfig.acquireResource();
             return jedis.georadius(key, longitude, latitude, radius, unit, withParam);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
         }
     }
 
@@ -141,12 +142,12 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
     public List<GeoRadiusResponse> geoRadiusByMember(String key, String member, double radius, GeoUnit unit) {
         Jedis jedis = null;
         try {
-            jedis = AbstractJedisConfig.acquireResource();
+            jedis = JedisPoolConfig.acquireResource();
             return jedis.georadiusByMember(key, member, radius, unit);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
         }
     }
 
@@ -154,12 +155,12 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
     public List<GeoRadiusResponse> geoRadiusByMember(String key, String member, double radius, GeoUnit unit, GeoRadiusParam withParam) {
         Jedis jedis = null;
         try {
-            jedis = AbstractJedisConfig.acquireResource();
+            jedis = JedisPoolConfig.acquireResource();
             return jedis.georadiusByMember(key, member, radius, unit, withParam);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
         }
     }
 
@@ -167,12 +168,25 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
     public List<String> geoHash(String key, String... members) {
         Jedis jedis = null;
         try {
-            jedis = AbstractJedisConfig.acquireResource();
+            jedis = JedisPoolConfig.acquireResource();
             return jedis.geohash(key, members);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
+        }
+    }
+
+    @Override
+    public Set<String> geoMembers(String key, int start, int end) {
+        Jedis jedis = null;
+        try {
+            jedis = JedisPoolConfig.acquireResource();
+            return jedis.zrange(key, start, end);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        } finally {
+            JedisPoolConfig.releaseResource(jedis);
         }
     }
 }

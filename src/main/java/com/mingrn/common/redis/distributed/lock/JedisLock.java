@@ -1,14 +1,11 @@
 package com.mingrn.common.redis.distributed.lock;
 
-import com.mingrn.common.redis.config.AbstractJedisConfig;
+import com.mingrn.common.redis.config.JedisPoolConfig;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.Transaction;
 import redis.clients.jedis.exceptions.JedisException;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * Jedis 锁机制
@@ -105,7 +102,7 @@ public class JedisLock {
         } catch (JedisException e) {
             throw new JedisException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
         }
         return identify;
     }*/
@@ -132,7 +129,7 @@ public class JedisLock {
         } catch (JedisException e) {
             throw new JedisException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
         }
         return identify;
     }*/
@@ -167,7 +164,7 @@ public class JedisLock {
         } catch (JedisException e) {
             throw new JedisException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
         }
         return isRelease;
     }*/
@@ -188,7 +185,7 @@ public class JedisLock {
         } catch (JedisException e) {
             throw new JedisException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
         }
         return LOCK_SUCCESS.equals(result);
     }
@@ -210,7 +207,7 @@ public class JedisLock {
         } catch (JedisException e){
             throw new JedisException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
         }
         return LOCK_SUCCESS.equals(result);
     }
@@ -232,7 +229,7 @@ public class JedisLock {
         } catch (JedisException e) {
             throw new JedisException(e);
         } finally {
-            AbstractJedisConfig.releaseResource(jedis);
+            JedisPoolConfig.releaseResource(jedis);
         }
         return RELEASE_SUCCESS.equals(result);
     }

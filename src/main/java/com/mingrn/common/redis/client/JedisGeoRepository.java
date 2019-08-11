@@ -8,6 +8,7 @@ import redis.clients.jedis.params.geo.GeoRadiusParam;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Redis 基于 GEO API 接口
@@ -139,4 +140,13 @@ public interface JedisGeoRepository extends BaseJedisRepository {
 	 * @param members 成员
 	 */
 	List<String> geoHash(String key, String... members);
+
+	/**
+	 * 获取指定key的成员
+	 *
+	 * @param key   键
+	 * @param start 开始范围
+	 * @param end   结束范围,为 -1 表示查询 start 之后的所有成员
+	 */
+	Set<String> geoMembers(String key, int start, int end);
 }

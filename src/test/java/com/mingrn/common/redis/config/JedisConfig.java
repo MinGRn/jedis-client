@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 public class JedisConfig {
 
     @Bean(initMethod = "initConnection", destroyMethod = "destroyConnection")
-    public JedisPoolConfig jedisPoolConfig(){
-        return new JedisPoolConfig();
+    public RedisPoolConfig jedisPoolConfig(){
+        return new RedisPoolConfig();
     }
 }

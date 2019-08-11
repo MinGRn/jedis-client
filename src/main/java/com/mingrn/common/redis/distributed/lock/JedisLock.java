@@ -1,6 +1,6 @@
 package com.mingrn.common.redis.distributed.lock;
 
-import com.mingrn.common.redis.config.JedisPoolConfig;
+import com.mingrn.common.redis.config.RedisPoolConfig;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.exceptions.JedisException;
@@ -102,7 +102,7 @@ public class JedisLock {
         } catch (JedisException e) {
             throw new JedisException(e);
         } finally {
-            JedisPoolConfig.releaseResource(jedis);
+            RedisPoolConfig.releaseResource(jedis);
         }
         return identify;
     }*/
@@ -129,7 +129,7 @@ public class JedisLock {
         } catch (JedisException e) {
             throw new JedisException(e);
         } finally {
-            JedisPoolConfig.releaseResource(jedis);
+            RedisPoolConfig.releaseResource(jedis);
         }
         return identify;
     }*/
@@ -164,7 +164,7 @@ public class JedisLock {
         } catch (JedisException e) {
             throw new JedisException(e);
         } finally {
-            JedisPoolConfig.releaseResource(jedis);
+            RedisPoolConfig.releaseResource(jedis);
         }
         return isRelease;
     }*/
@@ -185,7 +185,7 @@ public class JedisLock {
         } catch (JedisException e) {
             throw new JedisException(e);
         } finally {
-            JedisPoolConfig.releaseResource(jedis);
+            RedisPoolConfig.releaseResource(jedis);
         }
         return LOCK_SUCCESS.equals(result);
     }
@@ -207,7 +207,7 @@ public class JedisLock {
         } catch (JedisException e){
             throw new JedisException(e);
         } finally {
-            JedisPoolConfig.releaseResource(jedis);
+            RedisPoolConfig.releaseResource(jedis);
         }
         return LOCK_SUCCESS.equals(result);
     }
@@ -229,7 +229,7 @@ public class JedisLock {
         } catch (JedisException e) {
             throw new JedisException(e);
         } finally {
-            JedisPoolConfig.releaseResource(jedis);
+            RedisPoolConfig.releaseResource(jedis);
         }
         return RELEASE_SUCCESS.equals(result);
     }

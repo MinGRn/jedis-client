@@ -138,6 +138,7 @@ public interface JedisGeoRepository extends BaseJedisRepository {
 	 *
 	 * @param key     键
 	 * @param members 成员
+     * @return 返回 hash 值
 	 */
 	List<String> geoHash(String key, String... members);
 
@@ -147,6 +148,7 @@ public interface JedisGeoRepository extends BaseJedisRepository {
 	 * @param key   键
 	 * @param start 开始范围
 	 * @param end   结束范围,为 -1 表示查询 start 之后的所有成员
+     * @return 返回成员集合
 	 */
 	Set<String> geoMembers(String key, int start, int end);
 }

@@ -2,6 +2,8 @@ package com.mingrn.common.redis.client.base;
 
 import com.mingrn.common.redis.config.RedisPoolConfig;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.ScanParams;
+import redis.clients.jedis.ScanResult;
 
 /**
  * Redis 基础接口共用抽象类
@@ -149,6 +151,28 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.objectEncoding(key);
+        } finally {
+            RedisPoolConfig.releaseResource(jedis);
+        }
+    }
+
+    @Override
+    public ScanResult<String> scan(String cursor) {
+        Jedis jedis = null;
+        try {
+            jedis = RedisPoolConfig.acquireResource();
+            return jedis.scan(cursor);
+        } finally {
+            RedisPoolConfig.releaseResource(jedis);
+        }
+    }
+
+    @Override
+    public ScanResult<String> scan(String cursor, ScanParams params) {
+        Jedis jedis = null;
+        try {
+            jedis = RedisPoolConfig.acquireResource();
+            return jedis.scan(cursor, params);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }

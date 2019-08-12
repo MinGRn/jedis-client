@@ -1,5 +1,8 @@
 package com.mingrn.common.redis.client.base;
 
+import redis.clients.jedis.ScanParams;
+import redis.clients.jedis.ScanResult;
+
 /**
  * Redis 基础共用接口
  *
@@ -148,4 +151,25 @@ public interface BaseJedisRepository {
      * </ul>
      */
     String keyEncoding(String key);
+
+    /**
+     * 迭代数据库中的键, 初始 cursor 应为 0. 下次迭代的 cursor 值为上次返回的结果 cursor.
+     * 当除初始 cursor 为 0 外, 后续迭代过程如果返回的 cursor 为 0, 即表示数据库所有 key
+     * 已经迭代完了.
+     *
+     * @param cursor 游标,初始值应为 0
+     * @return 迭代结果key集合
+     */
+    ScanResult<String> scan(final String cursor);
+
+    /**
+     * 迭代数据库中的键, 初始 cursor 应为 0. 下次迭代的 cursor 值为上次返回的结果 cursor.
+     * 当除初始 cursor 为 0 外, 后续迭代过程如果返回的 cursor 为 0, 即表示数据库所有 key
+     * 已经迭代完了.
+     *
+     * @param cursor 游标,初始值应为 0
+     * @param params 匹配模式
+     * @return 迭代结果key集合
+     */
+    ScanResult<String> scan(final String cursor, final ScanParams params);
 }

@@ -134,7 +134,8 @@ public interface JedisHashRepository extends BaseJedisRepository {
     /**
      * 迭代哈希键值对
      * <p>
-     * hscan 命令同 scan, 用于迭代获取键值, 初始值应为 "0", 下次的 cursor 值
+     * hscan 命令同 {@link com.mingrn.common.redis.client.base.BaseJedisRepository#scan(String)},
+     * 用于迭代获取键值, 初始值应为 "0", 下次的 cursor 值
      * 应为上次迭代返回的 cursor 值
      *
      * @param key    键

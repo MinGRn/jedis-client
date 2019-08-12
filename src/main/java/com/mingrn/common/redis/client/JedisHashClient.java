@@ -24,7 +24,7 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
 
     private static JedisHashClient INSTANCE = new JedisHashClient();
 
-    private static JedisHashClient getINSTANCE() {
+    private static JedisHashClient getInstance() {
         return INSTANCE;
     }
 
@@ -36,8 +36,6 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
             jedis = RedisPoolConfig.acquireResource();
             return binary ? jedis.hset(key.getBytes(StandardCharsets.UTF_8), field.getBytes(StandardCharsets.UTF_8), val.getBytes(StandardCharsets.UTF_8))
                     : jedis.hset(key, field, val);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -50,8 +48,6 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
             jedis = RedisPoolConfig.acquireResource();
             String isOk = jedis.hmset(key, hash);
             return "ok".equalsIgnoreCase(isOk);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -63,8 +59,6 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.hsetnx(key, field, val) > 0;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -76,8 +70,6 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.hincrBy(key, field, val);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -89,8 +81,6 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.hincrByFloat(key, field, val);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -102,8 +92,6 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.hget(key, field);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -115,8 +103,6 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.hgetAll(key);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -128,8 +114,6 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.hexists(key, field);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -141,8 +125,6 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.hmget(key, fields);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -154,8 +136,6 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.hlen(key);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -167,8 +147,6 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.hkeys(key);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -180,8 +158,6 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.hvals(key);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -193,8 +169,6 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.hscan(key, cursor);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -206,8 +180,6 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.hscan(key, cursor, params);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -219,8 +191,6 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.hdel(key, field);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }

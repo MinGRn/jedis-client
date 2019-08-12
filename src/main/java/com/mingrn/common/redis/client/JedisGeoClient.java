@@ -35,8 +35,6 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.geoadd(key, longitude, latitude, member);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -48,8 +46,6 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.geoadd(key, memberCoordinateMap);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -66,8 +62,6 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
             } else {
                 return null;
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -79,8 +73,6 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.geopos(key, members);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -92,8 +84,6 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.geodist(key, member1, member2);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -105,8 +95,6 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.geodist(key, member1, member2, unit);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -118,8 +106,6 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.georadius(key, longitude, latitude, radius, unit);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -131,8 +117,6 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.georadius(key, longitude, latitude, radius, unit, withParam);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -144,8 +128,6 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.georadiusByMember(key, member, radius, unit);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -157,8 +139,6 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.georadiusByMember(key, member, radius, unit, withParam);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -170,8 +150,6 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.geohash(key, members);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -183,7 +161,7 @@ public class JedisGeoClient extends BaseJedisClient implements JedisGeoRepositor
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.zrange(key, start, end);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);

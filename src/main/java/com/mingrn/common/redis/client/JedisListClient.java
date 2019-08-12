@@ -20,7 +20,7 @@ public class JedisListClient extends BaseJedisClient implements JedisListReposit
 
     private static JedisListClient INSTANCE = new JedisListClient();
 
-    public static JedisListClient getInstance(){
+    public static JedisListClient getInstance() {
         return INSTANCE;
     }
 
@@ -30,8 +30,6 @@ public class JedisListClient extends BaseJedisClient implements JedisListReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return fromRight ? jedis.rpush(key, members) : jedis.lpush(key, members);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -43,8 +41,6 @@ public class JedisListClient extends BaseJedisClient implements JedisListReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.linsert(key, before ? Client.LIST_POSITION.BEFORE : Client.LIST_POSITION.AFTER, pivot, member);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -56,8 +52,6 @@ public class JedisListClient extends BaseJedisClient implements JedisListReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return fromRight ? jedis.rpop(key) : jedis.lpop(key);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -69,8 +63,6 @@ public class JedisListClient extends BaseJedisClient implements JedisListReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return fromRight ? jedis.brpop(timeout, keys) : jedis.blpop(timeout, keys);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -82,8 +74,6 @@ public class JedisListClient extends BaseJedisClient implements JedisListReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.lrem(key, count, member);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -95,8 +85,6 @@ public class JedisListClient extends BaseJedisClient implements JedisListReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.ltrim(key, start, end);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -108,8 +96,6 @@ public class JedisListClient extends BaseJedisClient implements JedisListReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.lrange(key, start, end);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -121,8 +107,6 @@ public class JedisListClient extends BaseJedisClient implements JedisListReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.lindex(key, index);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -134,8 +118,6 @@ public class JedisListClient extends BaseJedisClient implements JedisListReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.llen(key);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -147,8 +129,6 @@ public class JedisListClient extends BaseJedisClient implements JedisListReposit
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.lset(key, index, member);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }

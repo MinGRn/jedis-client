@@ -30,8 +30,6 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
             jedis = RedisPoolConfig.acquireResource();
             String isOk = binary ? jedis.set(key.getBytes(StandardCharsets.UTF_8), val.getBytes(StandardCharsets.UTF_8)) : jedis.set(key, val);
             return "ok".equalsIgnoreCase(isOk);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -43,8 +41,6 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
         try {
             jedis = RedisPoolConfig.acquireResource();
             return (binary ? jedis.setnx(key.getBytes(StandardCharsets.UTF_8), val.getBytes(StandardCharsets.UTF_8)) : jedis.setnx(key, val)) > 0;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -58,8 +54,6 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
             String isOk = !binary ? jedis.set(key, val, existOrNot ? "xx" : "nx") :
                     jedis.set(key.getBytes(StandardCharsets.UTF_8), val.getBytes(StandardCharsets.UTF_8), (existOrNot ? "xx" : "nx").getBytes(StandardCharsets.UTF_8));
             return "ok".equalsIgnoreCase(isOk);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -72,8 +66,6 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
             jedis = RedisPoolConfig.acquireResource();
             String isOk = binary ? jedis.setex(key.getBytes(StandardCharsets.UTF_8), seconds, val.getBytes(StandardCharsets.UTF_8)) : jedis.setex(key, seconds, val);
             return "ok".equalsIgnoreCase(isOk);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -87,8 +79,6 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
             String isOk = !binary ? jedis.set(key, val, existOrNot ? "xx" : "nx", "ex", seconds) :
                     jedis.set(key.getBytes(StandardCharsets.UTF_8), val.getBytes(StandardCharsets.UTF_8), (existOrNot ? "xx" : "nx").getBytes(StandardCharsets.UTF_8), "ex".getBytes(StandardCharsets.UTF_8), seconds);
             return "ok".equalsIgnoreCase(isOk);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -102,8 +92,6 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
             String isOk = !binary ? jedis.set(key, val, existOrNot ? "xx" : "nx", "px", millis)
                     : jedis.set(key.getBytes(StandardCharsets.UTF_8), val.getBytes(StandardCharsets.UTF_8), (existOrNot ? "xx" : "nx").getBytes(StandardCharsets.UTF_8), "px".getBytes(StandardCharsets.UTF_8), millis);
             return "ok".equalsIgnoreCase(isOk);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -115,8 +103,6 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.get(key);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -128,8 +114,6 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.get(key.getBytes(StandardCharsets.UTF_8));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -141,8 +125,6 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.getSet(key, newVal);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -154,8 +136,6 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.getSet(key.getBytes(StandardCharsets.UTF_8), newVal.getBytes(StandardCharsets.UTF_8));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -167,8 +147,6 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.getrange(key, startOffset, endOffset);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -180,8 +158,6 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.getrange(key.getBytes(StandardCharsets.UTF_8), startOffset, endOffset);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }

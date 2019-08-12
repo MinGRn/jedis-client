@@ -17,8 +17,6 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.del(keys);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -30,8 +28,6 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.rename(key, newKey);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -43,8 +39,6 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.renamenx(key, newKey);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -56,8 +50,6 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.expire(key, seconds);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -69,8 +61,6 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.expireAt(key, timestamp);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -82,8 +72,6 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.pexpire(key, milliseconds);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -95,8 +83,6 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.pexpireAt(key, millisecondsTimestamp);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -108,8 +94,6 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.persist(key);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -121,8 +105,6 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.ttl(key);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -134,8 +116,6 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.pttl(key);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -147,8 +127,6 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.exists(keys);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -160,8 +138,6 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.type(key);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
@@ -173,8 +149,6 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
         try {
             jedis = RedisPoolConfig.acquireResource();
             return jedis.objectEncoding(key);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }

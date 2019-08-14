@@ -6,6 +6,8 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.exceptions.JedisException;
 
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Jedis 锁机制
@@ -15,34 +17,20 @@ import java.util.Collections;
  */
 public class JedisLock {
 
-    /**
-     * 连接池
-     */
+    /** 连接池 */
     private final JedisPool jedisPool;
-    /**
-     * 锁过期时间
-     */
+    /** 锁过期时间 */
     private final int expireInSecond;
-    /**
-     * 锁轮询毫秒数
-     */
+    /** 锁轮询毫秒数 */
     private final long waitIntervalInMilliseconds;
-    /**
-     * 锁等待超时毫秒数
-     */
+    /** 锁等待超时毫秒数 */
     private final long tryLockTimeoutInMilliseconds;
 
-    /**
-     * 锁过期时间1分钟
-     */
+    /** 锁过期时间1分钟 */
     private final static int EXPIRE_IN_SECOND = 5 * 60;
-    /**
-     * 获取锁轮询间隔10毫秒
-     */
+    /** 获取锁轮询间隔10毫秒 */
     private final static long WAIT_INTERVAL_IN_MILLISECONDS = 10;
-    /**
-     * 锁等待时间5分钟
-     */
+    /** 锁等待时间5分钟 */
     private final static long TRY_LOCK_TIMEOUT_IN_MILLISECONDS = 5 * 60 * 1000;
 
     private static final Long RELEASE_SUCCESS = 1L;
@@ -50,9 +38,8 @@ public class JedisLock {
     private static final String SET_IF_NOT_EXIST = "NX";
     private static final String SET_WITH_EXPIRE_TIME = "PX";
 
-    /**
-     * @param jedisPool Jedis 线程池
-     */
+    private static final Logger LOGGER = Logger.getLogger(JedisLock.class.getName());
+
     public JedisLock(final JedisPool jedisPool) {
         this(jedisPool, EXPIRE_IN_SECOND, WAIT_INTERVAL_IN_MILLISECONDS, TRY_LOCK_TIMEOUT_IN_MILLISECONDS);
     }
@@ -70,105 +57,6 @@ public class JedisLock {
         this.tryLockTimeoutInMilliseconds = tryLockTimeoutInMilliseconds;
     }
 
-
-    /**
-     * 获取锁
-     *
-     * @param lockKey 锁Key
-     * @return value of key
-     */
-    /*public String tryLockWithWaiting(String lockKey) {
-        Jedis jedis = null;
-        String identify = null;
-        try {
-            jedis = jedisPool.getResource();
-            String uuidVal = UUID.randomUUID().toString();
-            Long duration = System.currentTimeMillis() + tryLockTimeoutInMilliseconds;
-            while (System.currentTimeMillis() < duration) {
-                if (jedis.setnx(lockKey, uuidVal) == 1) {
-                    jedis.expire(lockKey, EXPIRE_IN_SECOND);
-                    identify = uuidVal;
-                    break;
-                }
-                if (jedis.ttl(lockKey) == -1) {
-                    jedis.expire(lockKey, EXPIRE_IN_SECOND);
-                }
-                try {
-                    Thread.sleep(waitIntervalInMilliseconds);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        } catch (JedisException e) {
-            throw new JedisException(e);
-        } finally {
-            RedisPoolConfig.releaseResource(jedis);
-        }
-        return identify;
-    }*/
-
-    /**
-     * 获取锁, No Waiting !
-     *
-     * @param lockKey 锁Key
-     * @return value of key
-     */
-    /*public String tryLockWithNoWaiting(String lockKey) {
-        Jedis jedis = null;
-        String identify = null;
-        try {
-            jedis = jedisPool.getResource();
-            String uuidVal = UUID.randomUUID().toString();
-            if (jedis.setnx(lockKey, uuidVal) == 1) {
-                jedis.expire(lockKey, expireInSecond);
-                identify = uuidVal;
-            }
-            if (jedis.ttl(lockKey) == -1) {
-                jedis.expire(lockKey, expireInSecond);
-            }
-        } catch (JedisException e) {
-            throw new JedisException(e);
-        } finally {
-            RedisPoolConfig.releaseResource(jedis);
-        }
-        return identify;
-    }*/
-
-
-    /**
-     * 释放锁
-     *
-     * @param lockKey  锁Key
-     * @param identify 锁Value
-     * @return lock is release or not
-     */
-    /*public boolean releaseLock(String lockKey, String identify) {
-        Jedis jedis = null;
-        boolean isRelease = false;
-        try {
-            jedis = jedisPool.getResource();
-            while (true) {
-                jedis.watch(lockKey);
-                if (identify.equals(jedis.get(lockKey))) {
-                    Transaction trans = jedis.multi();
-                    trans.del(lockKey);
-                    List<Object> results = trans.exec();
-                    if (results == null) {
-                        continue;
-                    }
-                    isRelease = true;
-                }
-                jedis.unwatch();
-                break;
-            }
-        } catch (JedisException e) {
-            throw new JedisException(e);
-        } finally {
-            RedisPoolConfig.releaseResource(jedis);
-        }
-        return isRelease;
-    }*/
-
     /**
      * 获取分布式锁
      *
@@ -177,17 +65,17 @@ public class JedisLock {
      * @return 是否获取成功
      */
     public boolean tryGetDistributedLock(String lockKey, String requestId) {
-        String result;
+        String result = null;
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             result = jedis.set(lockKey, requestId, SET_IF_NOT_EXIST);
         } catch (JedisException e) {
-            throw new JedisException(e);
+            LOGGER.log(Level.WARNING, "Jedis Try Distributed Err", e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
-        return LOCK_SUCCESS.equals(result);
+        return LOCK_SUCCESS.equalsIgnoreCase(result);
     }
 
     /**
@@ -199,17 +87,17 @@ public class JedisLock {
      * @return 是否获取成功
      */
     public boolean tryGetDistributedLock(String lockKey, String requestId, int expireTime) {
-        String result;
+        String result = null;
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             result = jedis.set(lockKey, requestId, SET_IF_NOT_EXIST, SET_WITH_EXPIRE_TIME, expireTime);
-        } catch (JedisException e){
-            throw new JedisException(e);
+        } catch (JedisException e) {
+            LOGGER.log(Level.WARNING, "Jedis Try Distributed Err", e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
-        return LOCK_SUCCESS.equals(result);
+        return LOCK_SUCCESS.equalsIgnoreCase(result);
     }
 
     /**
@@ -220,14 +108,14 @@ public class JedisLock {
      * @return 是否释放成功
      */
     public boolean releaseDistributedLock(String lockKey, String requestId) {
-        Object result;
+        Object result = null;
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
             result = jedis.eval(script, Collections.singletonList(lockKey), Collections.singletonList(requestId));
         } catch (JedisException e) {
-            throw new JedisException(e);
+            LOGGER.log(Level.WARNING, "Jedis Release Distributed Err", e);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }

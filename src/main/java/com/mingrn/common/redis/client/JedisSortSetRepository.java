@@ -7,6 +7,12 @@ import redis.clients.jedis.params.sortedset.ZAddParams;
 
 import java.util.Set;
 
+/**
+ * Redis Sort Set API
+ *
+ * @author MinGRn <br > MinGRn97@gmail.com
+ * @date 2019/8/14 10:20
+ */
 public interface JedisSortSetRepository extends BaseJedisRepository {
 
     /**

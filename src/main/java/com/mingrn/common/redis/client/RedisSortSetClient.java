@@ -69,22 +69,11 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Long zRank(String key, String member) {
+    public Long zRank(String key, String member, boolean reversed) {
         Jedis jedis = null;
         try {
             jedis = redisPoolConfig.acquireResource();
-            return jedis.zrank(key, member);
-        } finally {
-            RedisPoolConfig.releaseResource(jedis);
-        }
-    }
-
-    @Override
-    public Long zRevRank(String key, String member) {
-        Jedis jedis = null;
-        try {
-            jedis = redisPoolConfig.acquireResource();
-            return jedis.zrevrank(key, member);
+            return reversed ? jedis.zrevrank(key, member) : jedis.zrank(key, member);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }

@@ -69,24 +69,15 @@ public interface RedisSortSetApi extends BaseRedisApi {
     Double zScore(String key, String member);
 
     /**
-     * 计算成员排名,按成员分数由低到高排名.
-     * 即分数越小排名越高.
+     * 计算成员排名
      *
-     * @param key 键
+     * @param key      键
+     * @param member   成员
+     * @param reversed true: 按成员分数由高到低排名,即分数越大排名越高.
+     *                 false: 按成员分数由低到高排名,即分数越小排名越高.
      * @return 成员排名名次
      */
-    Long zRank(String key, String member);
-
-    /**
-     * 计算成员排名,按成员分数由高到低排名.
-     * 即分数越大排名越高.
-     * <p>
-     * 命令全称是: sort by member rank reversed
-     *
-     * @param key 键
-     * @return 成员排名名次
-     */
-    Long zRevRank(String key, String member);
+    Long zRank(String key, String member, boolean reversed);
 
     /**
      * 删除成员
@@ -138,13 +129,14 @@ public interface RedisSortSetApi extends BaseRedisApi {
      * <p>
      * 示例: 查找最小分数等于 200, 最大分数无上限的用户:
      * <pre>{@code
-     *   zrangeByScore("u:rank", "[200", "+inf");
+     *   zRangeByScore("u:rank", "[200", "+inf");
      * }</pre>
      *
      * @param key      键
      * @param minScore 最小分数, 支持标识符如: -inf
      * @param maxScore 最大分数, 支持标识符如: +inf
-     * @param reversed true: 按分数由高到低排名, false: 按分数由低到高排名
+     * @param reversed true: 按分数由高到低排名.
+     *                 false: 按分数由低到高排名.
      * @return 成员集合
      */
     Set<String> zRangeByScore(String key, String minScore, String maxScore, boolean reversed);
@@ -153,12 +145,13 @@ public interface RedisSortSetApi extends BaseRedisApi {
      * 同 {@link #zRangeByScore(String, double, double, boolean)}.
      * 在此基础上增加 起始位置 与 返回个数
      *
-     * @param key 键
+     * @param key      键
      * @param minScore 最小分数
      * @param maxScore 最大分数
-     * @param reversed true: 按分数由高到低排名, false: 按分数由低到高排名
-     * @param offset 起始位置
-     * @param count 个数
+     * @param reversed true: 按分数由高到低排名.
+     *                 false: 按分数由低到高排名.
+     * @param offset   起始位置
+     * @param count    个数
      * @return 成员集合
      */
     Set<String> zRangeByScore(String key, double minScore, double maxScore, boolean reversed, int offset, int count);
@@ -167,12 +160,13 @@ public interface RedisSortSetApi extends BaseRedisApi {
      * 同 {@link #zRangeByScore(String, String, String, boolean)}.
      * 在此基础上增加 起始位置 与 返回个数
      *
-     * @param key 键
+     * @param key      键
      * @param minScore 最小分数
      * @param maxScore 最大分数
-     * @param reversed true: 按分数由高到低排名, false: 按分数由低到高排名
-     * @param offset 起始位置
-     * @param count 个数
+     * @param reversed true: 按分数由高到低排名.
+     *                 false: 按分数由低到高排名.
+     * @param offset   起始位置
+     * @param count    个数
      * @return 成员集合
      */
     Set<String> zRangeByScore(String key, String minScore, String maxScore, boolean reversed, int offset, int count);
@@ -183,7 +177,8 @@ public interface RedisSortSetApi extends BaseRedisApi {
      * @param key      键
      * @param minScore 最小分数
      * @param maxScore 最大分数
-     * @param reversed true: 按分数由高到低排名, false: 按分数由低到高排名
+     * @param reversed true: 按分数由高到低排名.
+     *                 false: 按分数由低到高排名.
      * @return 成员集合
      */
     Set<Tuple> zRangeByScoreWithScores(String key, double minScore, double maxScore, boolean reversed);
@@ -199,7 +194,8 @@ public interface RedisSortSetApi extends BaseRedisApi {
      * @param key      键
      * @param minScore 最小分数
      * @param maxScore 最大分数
-     * @param reversed true: 按分数由高到低排名, false: 按分数由低到高排名
+     * @param reversed true: 按分数由高到低排名.
+     *                 false: 按分数由低到高排名.
      * @return 成员集合
      */
     Set<Tuple> zRangeByScoreWithScores(String key, String minScore, String maxScore, boolean reversed);
@@ -211,7 +207,8 @@ public interface RedisSortSetApi extends BaseRedisApi {
      * @param key      键
      * @param minScore 最小分数
      * @param maxScore 最大分数
-     * @param reversed true: 按分数由高到低排名, false: 按分数由低到高排名
+     * @param reversed true: 按分数由高到低排名.
+     *                 false: 按分数由低到高排名.
      * @param offset   起始位置
      * @param count    个数
      * @return 成员集合
@@ -225,7 +222,8 @@ public interface RedisSortSetApi extends BaseRedisApi {
      * @param key      键
      * @param minScore 最小分数
      * @param maxScore 最大分数
-     * @param reversed true: 按分数由高到低排名, false: 按分数由低到高排名
+     * @param reversed true: 按分数由高到低排名。
+     *                 false: 按分数由低到高排名。
      * @param offset   起始位置
      * @param count    个数
      * @return 成员集合
@@ -235,9 +233,24 @@ public interface RedisSortSetApi extends BaseRedisApi {
     /**
      * 返回指分数范围内的成员个数
      *
+     * @param key      键
+     * @param minScore 最小分数
+     * @param maxScore 最大分数
+     * @return 成员个数
      */
     Long zCount(String key, double minScore, double maxScore);
 
+    /**
+     * 返回指分数范围内的成员个数
+     * 该接口支持开(小括号)闭(中括号)区间,另外还有如下表示方式:
+     * -inf: 无限小
+     * +inf: 无限大
+     *
+     * @param key      键
+     * @param minScore 最小分数
+     * @param maxScore 最大分数
+     * @return 成员个数
+     */
     Long zCount(String key, String minScore, String maxScore);
 
     /**
@@ -278,6 +291,7 @@ public interface RedisSortSetApi extends BaseRedisApi {
      * @param destination 目标存储集合
      * @param params      可选参数
      * @param sources     源集合
+     * @return
      */
     Long zInterStore(String destination, ZParams params, String... sources);
 
@@ -286,6 +300,7 @@ public interface RedisSortSetApi extends BaseRedisApi {
      *
      * @param destination 目标存储集合
      * @param sources     源集合
+     * @return
      */
     Long zUnionStore(String destination, String... sources);
 
@@ -296,6 +311,7 @@ public interface RedisSortSetApi extends BaseRedisApi {
      * @param destination 目标存储集合
      * @param params      可选参数
      * @param sources     源集合
+     * @return
      */
     Long zUnionStore(String destination, ZParams params, String... sources);
 }

@@ -144,11 +144,13 @@ public interface RedisGeoApi extends BaseRedisApi {
 
 	/**
 	 * 获取指定key的成员
+	 * <p>
+	 * 该 GEO API 内部使用的是 Sort Set. 具体可参见 {@link RedisSortSetApi#zRange(String, long, long, boolean)}
 	 *
 	 * @param key   键
 	 * @param start 开始范围
 	 * @param end   结束范围,为 -1 表示查询 start 之后的所有成员
-     * @return 返回成员集合
+	 * @return 返回成员集合
 	 */
 	Set<String> geoMembers(String key, int start, int end);
 }

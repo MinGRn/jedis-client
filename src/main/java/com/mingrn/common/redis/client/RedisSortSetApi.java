@@ -71,13 +71,13 @@ public interface RedisSortSetApi extends BaseRedisApi {
     /**
      * 计算成员排名
      *
-     * @param key      键
-     * @param member   成员
-     * @param reversed true: 按成员分数由高到低排名,即分数越大排名越高.
-     *                 false: 按成员分数由低到高排名,即分数越小排名越高.
+     * @param key     键
+     * @param member  成员
+     * @param reverse true: 按成员分数由高到低排名,即分数越大排名越高.
+     *                false: 按成员分数由低到高排名,即分数越小排名越高.
      * @return 成员排名名次
      */
-    Long zRank(String key, String member, boolean reversed);
+    Long zRank(String key, String member, boolean reverse);
 
     /**
      * 删除成员

@@ -18,12 +18,16 @@ import java.util.logging.Logger;
  */
 public class RedisPoolConfig {
 
-    private static JedisPool jedisPool;
+    private final int port;
+
+    private final String host;
+
+    private final JedisPool jedisPool;
 
     private static final Logger LOGGER = Logger.getLogger(RedisPoolConfig.class.getName());
 
     /** acquire redis resource */
-    public static Jedis acquireResource() {
+    public Jedis acquireResource() {
         if (jedisPool == null) {
             throw new JedisConnectionException("Can not Get Jedis Pool Resource, Please check whether the correct configuration!");
         }
@@ -46,12 +50,12 @@ public class RedisPoolConfig {
         if (jedisPool == null) {
             throw new JedisConnectionException("Can't Connect Redis, Please check whether the connection configuration is correct again");
         }
-        LOGGER.info("-----------------------------Redis Has Been Successfully Connected-----------------------------");
+        LOGGER.info("-----------------------------Redis [host: " + host + ", port: " + port + "] Has Been Successfully Connected-----------------------------");
     }
 
     /** destroy redis connection */
     public void destroyConnection() {
-        LOGGER.info("-----------------------------Redis Connection Has Been Successfully Destroy-----------------------------");
+        LOGGER.info("-----------------------------Redis [host: " + host + ", port: " + port + "] Connection Has Been Successfully Destroy-----------------------------");
     }
 
     //---------------------------------------------------Below Is The Constructor-------------------------------------------------------------
@@ -63,6 +67,8 @@ public class RedisPoolConfig {
     }
 
     public RedisPoolConfig(final String host) {
+        this.port = Protocol.DEFAULT_PORT;
+        this.host = host;
         jedisPool = new JedisPool(host);
     }
 
@@ -194,16 +200,21 @@ public class RedisPoolConfig {
     }
 
     public RedisPoolConfig(final String host, final SSLSocketFactory sslSocketFactory, final SSLParameters sslParameters, final HostnameVerifier hostnameVerifier) {
+        this.port = Protocol.DEFAULT_PORT;
+        this.host = host;
         jedisPool = new JedisPool(host, sslSocketFactory, sslParameters, hostnameVerifier);
     }
 
     public RedisPoolConfig(final GenericObjectPoolConfig poolConfig, final URI uri, final int connectionTimeout, final int soTimeout) {
+        this.port = uri.getPort();
+        this.host = uri.getHost();
         jedisPool = new JedisPool(poolConfig, uri, connectionTimeout, soTimeout);
     }
 
     public RedisPoolConfig(final GenericObjectPoolConfig poolConfig, final URI uri, final int connectionTimeout,
                            final int soTimeout, final SSLSocketFactory sslSocketFactory, final SSLParameters sslParameters, final HostnameVerifier hostnameVerifier) {
-
+        this.port = uri.getPort();
+        this.host = uri.getHost();
         jedisPool = new JedisPool(poolConfig, uri, connectionTimeout, soTimeout, sslSocketFactory, sslParameters, hostnameVerifier);
     }
 
@@ -211,7 +222,8 @@ public class RedisPoolConfig {
                            final int connectionTimeout, final int soTimeout, final String password, final int database,
                            final String clientName, final boolean ssl, final SSLSocketFactory sslSocketFactory,
                            final SSLParameters sslParameters, final HostnameVerifier hostnameVerifier) {
-
+        this.port = port;
+        this.host = host;
         jedisPool = new JedisPool(poolConfig, host, port, connectionTimeout, soTimeout, password, database, clientName, ssl, sslSocketFactory, sslParameters, hostnameVerifier);
     }
 }

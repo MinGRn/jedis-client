@@ -11,13 +11,19 @@ import redis.clients.jedis.ScanResult;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 03/10/2018 19:28
  */
-public abstract class BaseJedisClient implements BaseJedisRepository {
+public abstract class BaseJedisClient<T extends RedisPoolConfig> implements BaseJedisRepository {
+
+    private T redisPoolConfig;
+
+    public BaseJedisClient(T redisPoolConfig) {
+        this.redisPoolConfig = redisPoolConfig;
+    }
 
     @Override
     public Long delete(String... keys) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.del(keys);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -28,7 +34,7 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
     public String rename(String key, String newKey) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.rename(key, newKey);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -39,7 +45,7 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
     public Long renameAndNotExist(String key, String newKey) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.renamenx(key, newKey);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -50,7 +56,7 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
     public Long expire(String key, int seconds) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.expire(key, seconds);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -61,7 +67,7 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
     public Long expireAtTimeStamp(String key, long timestamp) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.expireAt(key, timestamp);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -72,7 +78,7 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
     public Long expireInMillis(String key, long milliseconds) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.pexpire(key, milliseconds);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -83,7 +89,7 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
     public Long expireAtMillisTimeStamp(String key, long millisecondsTimestamp) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.pexpireAt(key, millisecondsTimestamp);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -94,7 +100,7 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
     public Long persist(String key) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.persist(key);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -105,7 +111,7 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
     public Long ttl(String key) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.ttl(key);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -116,7 +122,7 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
     public Long ttlInMillis(String key) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.pttl(key);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -127,7 +133,7 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
     public Long exists(String... keys) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.exists(keys);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -138,7 +144,7 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
     public String type(String key) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.type(key);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -149,7 +155,7 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
     public String keyEncoding(String key) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.objectEncoding(key);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -160,7 +166,7 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
     public ScanResult<String> scan(String cursor) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.scan(cursor);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -171,7 +177,7 @@ public abstract class BaseJedisClient implements BaseJedisRepository {
     public ScanResult<String> scan(String cursor, ScanParams params) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.scan(cursor, params);
         } finally {
             RedisPoolConfig.releaseResource(jedis);

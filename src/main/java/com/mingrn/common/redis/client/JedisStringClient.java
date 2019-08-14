@@ -12,22 +12,20 @@ import java.nio.charset.StandardCharsets;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 2019-08-11 22:28
  */
-public class JedisStringClient extends BaseJedisClient implements JedisStringRepository {
+public class JedisStringClient<T extends RedisPoolConfig> extends BaseJedisClient implements JedisStringRepository {
 
-    private JedisStringClient() {
-    }
+    private T redisPoolConfig;
 
-    private static JedisStringClient INSTANCE = new JedisStringClient();
-
-    public static JedisStringClient getInstance() {
-        return INSTANCE;
+    public JedisStringClient(T redisPoolConfig) {
+        super(redisPoolConfig);
+        this.redisPoolConfig = redisPoolConfig;
     }
 
     @Override
     public boolean set(String key, String val, boolean binary) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             String isOk = binary ? jedis.set(key.getBytes(StandardCharsets.UTF_8), val.getBytes(StandardCharsets.UTF_8)) : jedis.set(key, val);
             return "ok".equalsIgnoreCase(isOk);
         } finally {
@@ -39,7 +37,7 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
     public boolean setAndNotExist(String key, String val, boolean binary) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return (binary ? jedis.setnx(key.getBytes(StandardCharsets.UTF_8), val.getBytes(StandardCharsets.UTF_8)) : jedis.setnx(key, val)) > 0;
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -50,7 +48,7 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
     public boolean setExistOrNot(String key, String val, boolean existOrNot, boolean binary) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             String isOk = !binary ? jedis.set(key, val, existOrNot ? "xx" : "nx") :
                     jedis.set(key.getBytes(StandardCharsets.UTF_8), val.getBytes(StandardCharsets.UTF_8), (existOrNot ? "xx" : "nx").getBytes(StandardCharsets.UTF_8));
             return "ok".equalsIgnoreCase(isOk);
@@ -63,7 +61,7 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
     public boolean setExpireAtSeconds(String key, String val, int seconds, boolean binary) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             String isOk = binary ? jedis.setex(key.getBytes(StandardCharsets.UTF_8), seconds, val.getBytes(StandardCharsets.UTF_8)) : jedis.setex(key, seconds, val);
             return "ok".equalsIgnoreCase(isOk);
         } finally {
@@ -75,7 +73,7 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
     public boolean setExpireAtSeconds(String key, String val, int seconds, boolean binary, boolean existOrNot) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             String isOk = !binary ? jedis.set(key, val, existOrNot ? "xx" : "nx", "ex", seconds) :
                     jedis.set(key.getBytes(StandardCharsets.UTF_8), val.getBytes(StandardCharsets.UTF_8), (existOrNot ? "xx" : "nx").getBytes(StandardCharsets.UTF_8), "ex".getBytes(StandardCharsets.UTF_8), seconds);
             return "ok".equalsIgnoreCase(isOk);
@@ -88,7 +86,7 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
     public boolean setExpireAtMillis(String key, String val, long millis, boolean binary, boolean existOrNot) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             String isOk = !binary ? jedis.set(key, val, existOrNot ? "xx" : "nx", "px", millis)
                     : jedis.set(key.getBytes(StandardCharsets.UTF_8), val.getBytes(StandardCharsets.UTF_8), (existOrNot ? "xx" : "nx").getBytes(StandardCharsets.UTF_8), "px".getBytes(StandardCharsets.UTF_8), millis);
             return "ok".equalsIgnoreCase(isOk);
@@ -101,7 +99,7 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
     public String get(String key) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.get(key);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -112,7 +110,7 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
     public byte[] getWithBinaryKey(String key) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.get(key.getBytes(StandardCharsets.UTF_8));
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -123,7 +121,7 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
     public String getAndSetNewVal(String key, String newVal) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.getSet(key, newVal);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -134,7 +132,7 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
     public byte[] getAndSetNewValWithBinary(String key, String newVal) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.getSet(key.getBytes(StandardCharsets.UTF_8), newVal.getBytes(StandardCharsets.UTF_8));
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -145,7 +143,7 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
     public String getRange(String key, long startOffset, long endOffset) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.getrange(key, startOffset, endOffset);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -156,7 +154,7 @@ public class JedisStringClient extends BaseJedisClient implements JedisStringRep
     public byte[] getRangeWithBinary(String key, long startOffset, long endOffset) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.getrange(key.getBytes(StandardCharsets.UTF_8), startOffset, endOffset);
         } finally {
             RedisPoolConfig.releaseResource(jedis);

@@ -17,15 +17,13 @@ import java.util.Set;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 2019/8/12 11:07
  */
-public class JedisHashClient extends BaseJedisClient implements JedisHashRepository {
+public class JedisHashClient<T extends RedisPoolConfig> extends BaseJedisClient implements JedisHashRepository {
 
-    private JedisHashClient() {
-    }
+    private T redisPoolConfig;
 
-    private static JedisHashClient INSTANCE = new JedisHashClient();
-
-    private static JedisHashClient getInstance() {
-        return INSTANCE;
+    public JedisHashClient(T redisPoolConfig) {
+        super(redisPoolConfig);
+        this.redisPoolConfig = redisPoolConfig;
     }
 
 
@@ -33,7 +31,7 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
     public long hSet(String key, String field, String val, boolean binary) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return binary ? jedis.hset(key.getBytes(StandardCharsets.UTF_8), field.getBytes(StandardCharsets.UTF_8), val.getBytes(StandardCharsets.UTF_8))
                     : jedis.hset(key, field, val);
         } finally {
@@ -45,7 +43,7 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
     public boolean hManySet(String key, Map<String, String> hash) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             String isOk = jedis.hmset(key, hash);
             return "ok".equalsIgnoreCase(isOk);
         } finally {
@@ -57,7 +55,7 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
     public boolean hSetAndNotExist(String key, String field, String val) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.hsetnx(key, field, val) > 0;
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -68,7 +66,7 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
     public long hIncrBy(String key, String field, long val) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.hincrBy(key, field, val);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -79,7 +77,7 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
     public double hIncrByFloat(String key, String field, double val) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.hincrByFloat(key, field, val);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -90,7 +88,7 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
     public String hGet(String key, String field) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.hget(key, field);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -101,7 +99,7 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
     public Map<String, String> hGetAll(String key) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.hgetAll(key);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -112,7 +110,7 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
     public Boolean hFieldExist(String key, String field) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.hexists(key, field);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -123,7 +121,7 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
     public List<String> hManyGet(String key, String... fields) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.hmget(key, fields);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -134,7 +132,7 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
     public Long hLen(String key) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.hlen(key);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -145,7 +143,7 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
     public Set<String> hKeys(String key) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.hkeys(key);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -156,7 +154,7 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
     public List<String> hVals(String key) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.hvals(key);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -167,7 +165,7 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
     public ScanResult<Map.Entry<String, String>> hScan(String key, String cursor) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.hscan(key, cursor);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -178,7 +176,7 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
     public ScanResult<Map.Entry<String, String>> hScan(String key, String cursor, ScanParams params) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.hscan(key, cursor, params);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
@@ -189,7 +187,7 @@ public class JedisHashClient extends BaseJedisClient implements JedisHashReposit
     public Long hDel(String key, String... field) {
         Jedis jedis = null;
         try {
-            jedis = RedisPoolConfig.acquireResource();
+            jedis = redisPoolConfig.acquireResource();
             return jedis.hdel(key, field);
         } finally {
             RedisPoolConfig.releaseResource(jedis);

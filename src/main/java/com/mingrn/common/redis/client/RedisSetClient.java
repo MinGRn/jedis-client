@@ -1,132 +1,164 @@
 package com.mingrn.common.redis.client;
 
-import com.mingrn.common.redis.client.base.BaseJedisClient;
+import com.mingrn.common.redis.client.base.BaseRedisClient;
 import com.mingrn.common.redis.config.RedisPoolConfig;
-import redis.clients.jedis.Client;
 import redis.clients.jedis.Jedis;
 
-import java.util.List;
+import java.util.Set;
 
 /**
- * Redis List API
+ * Redis SET API
  *
  * @author MinGRn <br > MinGRn97@gmail.com
- * @date 2019-08-12 21:28
+ * @date 2019-08-13 20:51
  */
-public class JedisListClient<T extends RedisPoolConfig> extends BaseJedisClient implements JedisListRepository {
+public class RedisSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T> implements RedisSetApi {
 
     private T redisPoolConfig;
 
-    public JedisListClient(T redisPoolConfig) {
+    public RedisSetClient(T redisPoolConfig) {
         super(redisPoolConfig);
         this.redisPoolConfig = redisPoolConfig;
     }
 
     @Override
-    public Long listPush(String key, boolean fromRight, String... members) {
+    public Long setAdd(String key, String... members) {
         Jedis jedis = null;
         try {
             jedis = redisPoolConfig.acquireResource();
-            return fromRight ? jedis.rpush(key, members) : jedis.lpush(key, members);
+            return jedis.sadd(key, members);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
     }
 
     @Override
-    public Long listInsert(String key, boolean before, String pivot, String member) {
+    public Long setRemove(String key, String... members) {
         Jedis jedis = null;
         try {
             jedis = redisPoolConfig.acquireResource();
-            return jedis.linsert(key, before ? Client.LIST_POSITION.BEFORE : Client.LIST_POSITION.AFTER, pivot, member);
+            return jedis.srem(key, members);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
     }
 
     @Override
-    public String listPop(String key, boolean fromRight) {
+    public Boolean setIsMember(String key, String member) {
         Jedis jedis = null;
         try {
             jedis = redisPoolConfig.acquireResource();
-            return fromRight ? jedis.rpop(key) : jedis.lpop(key);
+            return jedis.sismember(key, member);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
     }
 
     @Override
-    public List<String> listBlockPop(boolean fromRight, int timeout, String... keys) {
+    public String setPop(String key) {
         Jedis jedis = null;
         try {
             jedis = redisPoolConfig.acquireResource();
-            return fromRight ? jedis.brpop(timeout, keys) : jedis.blpop(timeout, keys);
+            return jedis.spop(key);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
     }
 
     @Override
-    public Long listRemove(String key, int count, String member) {
+    public Set<String> setPop(String key, long count) {
         Jedis jedis = null;
         try {
             jedis = redisPoolConfig.acquireResource();
-            return jedis.lrem(key, count, member);
+            return jedis.spop(key, count);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
     }
 
     @Override
-    public String listTrim(String key, long start, long end) {
+    public Set<String> setMembers(String key) {
         Jedis jedis = null;
         try {
             jedis = redisPoolConfig.acquireResource();
-            return jedis.ltrim(key, start, end);
+            return jedis.smembers(key);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
     }
 
     @Override
-    public List<String> listRange(String key, long start, long end) {
+    public Long setMove(String source, String destination, String member) {
         Jedis jedis = null;
         try {
             jedis = redisPoolConfig.acquireResource();
-            return jedis.lrange(key, start, end);
+            return jedis.smove(source, destination, member);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
     }
 
     @Override
-    public String listGetByIndex(String key, long index) {
+    public Set<String> setInter(String... keys) {
         Jedis jedis = null;
         try {
             jedis = redisPoolConfig.acquireResource();
-            return jedis.lindex(key, index);
+            return jedis.sinter(keys);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
     }
 
     @Override
-    public Long listLen(String key) {
+    public Set<String> setUnion(String... keys) {
         Jedis jedis = null;
         try {
             jedis = redisPoolConfig.acquireResource();
-            return jedis.llen(key);
+            return jedis.sunion(keys);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }
     }
 
     @Override
-    public String listSet(String key, long index, String member) {
+    public Set<String> setDiff(String... keys) {
         Jedis jedis = null;
         try {
             jedis = redisPoolConfig.acquireResource();
-            return jedis.lset(key, index, member);
+            return jedis.sdiff(keys);
+        } finally {
+            RedisPoolConfig.releaseResource(jedis);
+        }
+    }
+
+    @Override
+    public Long setInterAndStore(String destination, String... keys) {
+        Jedis jedis = null;
+        try {
+            jedis = redisPoolConfig.acquireResource();
+            return jedis.sinterstore(destination, keys);
+        } finally {
+            RedisPoolConfig.releaseResource(jedis);
+        }
+    }
+
+    @Override
+    public Long setUnionAndStore(String destination, String... keys) {
+        Jedis jedis = null;
+        try {
+            jedis = redisPoolConfig.acquireResource();
+            return jedis.sunionstore(destination, keys);
+        } finally {
+            RedisPoolConfig.releaseResource(jedis);
+        }
+    }
+
+    @Override
+    public Long setDiffAndStore(String destination, String... keys) {
+        Jedis jedis = null;
+        try {
+            jedis = redisPoolConfig.acquireResource();
+            return jedis.sdiffstore(destination, keys);
         } finally {
             RedisPoolConfig.releaseResource(jedis);
         }

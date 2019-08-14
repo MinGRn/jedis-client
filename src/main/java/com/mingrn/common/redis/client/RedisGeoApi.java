@@ -1,6 +1,6 @@
 package com.mingrn.common.redis.client;
 
-import com.mingrn.common.redis.client.base.BaseJedisRepository;
+import com.mingrn.common.redis.client.base.BaseRedisApi;
 import redis.clients.jedis.GeoCoordinate;
 import redis.clients.jedis.GeoRadiusResponse;
 import redis.clients.jedis.GeoUnit;
@@ -16,7 +16,7 @@ import java.util.Set;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 03/10/2018 19:27
  */
-public interface JedisGeoRepository extends BaseJedisRepository {
+public interface RedisGeoApi extends BaseRedisApi {
 
 	/**
 	 * 新增地理位置信息

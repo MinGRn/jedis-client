@@ -1,6 +1,6 @@
 package com.mingrn.common.redis.client;
 
-import com.mingrn.common.redis.client.base.BaseJedisClient;
+import com.mingrn.common.redis.client.base.BaseRedisClient;
 import com.mingrn.common.redis.config.RedisPoolConfig;
 import redis.clients.jedis.GeoCoordinate;
 import redis.clients.jedis.GeoRadiusResponse;
@@ -18,11 +18,11 @@ import java.util.Set;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 03/10/2018 20:49
  */
-public class JedisGeoClient<T extends RedisPoolConfig> extends BaseJedisClient implements JedisGeoRepository {
+public class RedisGeoClient<T extends RedisPoolConfig> extends BaseRedisClient<T> implements RedisGeoApi {
 
     private T redisPoolConfig;
 
-    public JedisGeoClient(T redisPoolConfig) {
+    public RedisGeoClient(T redisPoolConfig) {
         super(redisPoolConfig);
         this.redisPoolConfig = redisPoolConfig;
     }

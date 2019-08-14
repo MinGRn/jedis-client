@@ -11,11 +11,11 @@ import redis.clients.jedis.ScanResult;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 03/10/2018 19:28
  */
-public abstract class BaseJedisClient<T extends RedisPoolConfig> implements BaseJedisRepository {
+public abstract class BaseRedisClient<T extends RedisPoolConfig> implements BaseRedisApi {
 
     private T redisPoolConfig;
 
-    public BaseJedisClient(T redisPoolConfig) {
+    public BaseRedisClient(T redisPoolConfig) {
         this.redisPoolConfig = redisPoolConfig;
     }
 

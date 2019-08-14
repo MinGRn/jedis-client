@@ -10,12 +10,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Jedis 锁机制
+ * Redis 锁机制
  *
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 19/10/2018 09:57
  */
-public class JedisLock {
+public class RedisLock {
 
     /** 连接池 */
     private final JedisPool jedisPool;
@@ -38,9 +38,9 @@ public class JedisLock {
     private static final String SET_IF_NOT_EXIST = "NX";
     private static final String SET_WITH_EXPIRE_TIME = "PX";
 
-    private static final Logger LOGGER = Logger.getLogger(JedisLock.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RedisLock.class.getName());
 
-    public JedisLock(final JedisPool jedisPool) {
+    public RedisLock(final JedisPool jedisPool) {
         this(jedisPool, EXPIRE_IN_SECOND, WAIT_INTERVAL_IN_MILLISECONDS, TRY_LOCK_TIMEOUT_IN_MILLISECONDS);
     }
 
@@ -50,7 +50,7 @@ public class JedisLock {
      * @param waitIntervalInMilliseconds   获取锁等待毫秒数
      * @param tryLockTimeoutInMilliseconds 获取锁超时时间
      */
-    private JedisLock(final JedisPool jedisPool, final Integer expireInSecond, final Long waitIntervalInMilliseconds, final Long tryLockTimeoutInMilliseconds) {
+    private RedisLock(final JedisPool jedisPool, final Integer expireInSecond, final Long waitIntervalInMilliseconds, final Long tryLockTimeoutInMilliseconds) {
         this.jedisPool = jedisPool;
         this.expireInSecond = expireInSecond;
         this.waitIntervalInMilliseconds = waitIntervalInMilliseconds;

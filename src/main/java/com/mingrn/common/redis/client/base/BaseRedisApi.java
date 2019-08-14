@@ -9,7 +9,7 @@ import redis.clients.jedis.ScanResult;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 03/10/2018 19:27
  */
-public interface BaseJedisRepository {
+public interface BaseRedisApi {
 
     /**
      * 删除键,支持批量

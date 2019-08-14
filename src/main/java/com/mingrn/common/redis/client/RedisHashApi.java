@@ -1,6 +1,6 @@
 package com.mingrn.common.redis.client;
 
-import com.mingrn.common.redis.client.base.BaseJedisRepository;
+import com.mingrn.common.redis.client.base.BaseRedisApi;
 import redis.clients.jedis.ScanParams;
 import redis.clients.jedis.ScanResult;
 
@@ -14,7 +14,7 @@ import java.util.Set;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 2019/8/12 11:07
  */
-public interface JedisHashRepository extends BaseJedisRepository {
+public interface RedisHashApi extends BaseRedisApi {
 
     /**
      * @param key    键
@@ -134,7 +134,7 @@ public interface JedisHashRepository extends BaseJedisRepository {
     /**
      * 迭代哈希键值对
      * <p>
-     * hscan 命令同 {@link com.mingrn.common.redis.client.base.BaseJedisRepository#scan(String)},
+     * hscan 命令同 {@link BaseRedisApi#scan(String)},
      * 用于迭代获取键值, 初始值应为 "0", 下次的 cursor 值
      * 应为上次迭代返回的 cursor 值
      *

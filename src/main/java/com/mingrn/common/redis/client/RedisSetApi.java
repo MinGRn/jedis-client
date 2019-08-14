@@ -1,6 +1,6 @@
 package com.mingrn.common.redis.client;
 
-import com.mingrn.common.redis.client.base.BaseJedisRepository;
+import com.mingrn.common.redis.client.base.BaseRedisApi;
 
 import java.util.Set;
 
@@ -10,7 +10,7 @@ import java.util.Set;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 2019-08-13 20:50
  */
-public interface JedisSetRepository extends BaseJedisRepository {
+public interface RedisSetApi extends BaseRedisApi {
 
     /**
      * 集合添加成员

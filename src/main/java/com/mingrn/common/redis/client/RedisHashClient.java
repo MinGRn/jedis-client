@@ -1,6 +1,6 @@
 package com.mingrn.common.redis.client;
 
-import com.mingrn.common.redis.client.base.BaseJedisClient;
+import com.mingrn.common.redis.client.base.BaseRedisClient;
 import com.mingrn.common.redis.config.RedisPoolConfig;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.ScanParams;
@@ -17,11 +17,11 @@ import java.util.Set;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 2019/8/12 11:07
  */
-public class JedisHashClient<T extends RedisPoolConfig> extends BaseJedisClient implements JedisHashRepository {
+public class RedisHashClient<T extends RedisPoolConfig> extends BaseRedisClient<T> implements RedisHashApi {
 
     private T redisPoolConfig;
 
-    public JedisHashClient(T redisPoolConfig) {
+    public RedisHashClient(T redisPoolConfig) {
         super(redisPoolConfig);
         this.redisPoolConfig = redisPoolConfig;
     }

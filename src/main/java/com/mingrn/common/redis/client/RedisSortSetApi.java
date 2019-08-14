@@ -1,6 +1,6 @@
 package com.mingrn.common.redis.client;
 
-import com.mingrn.common.redis.client.base.BaseJedisRepository;
+import com.mingrn.common.redis.client.base.BaseRedisApi;
 import redis.clients.jedis.Tuple;
 import redis.clients.jedis.ZParams;
 import redis.clients.jedis.params.sortedset.ZAddParams;
@@ -13,7 +13,7 @@ import java.util.Set;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 2019/8/14 10:20
  */
-public interface JedisSortSetRepository extends BaseJedisRepository {
+public interface RedisSortSetApi extends BaseRedisApi {
 
     /**
      * 新增或修改成员(分数)

@@ -1,6 +1,6 @@
 package com.mingrn.common.redis.client;
 
-import com.mingrn.common.redis.client.base.BaseJedisRepository;
+import com.mingrn.common.redis.client.base.BaseRedisApi;
 
 /**
  * Redis 基于 String API
@@ -8,7 +8,7 @@ import com.mingrn.common.redis.client.base.BaseJedisRepository;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 2019-08-11 22:25
  */
-public interface JedisStringRepository extends BaseJedisRepository {
+public interface RedisStringApi extends BaseRedisApi {
 
     /**
      * 设置键 - 值

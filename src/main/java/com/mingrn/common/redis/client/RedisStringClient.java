@@ -1,6 +1,6 @@
 package com.mingrn.common.redis.client;
 
-import com.mingrn.common.redis.client.base.BaseJedisClient;
+import com.mingrn.common.redis.client.base.BaseRedisClient;
 import com.mingrn.common.redis.config.RedisPoolConfig;
 import redis.clients.jedis.Jedis;
 
@@ -12,11 +12,11 @@ import java.nio.charset.StandardCharsets;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 2019-08-11 22:28
  */
-public class JedisStringClient<T extends RedisPoolConfig> extends BaseJedisClient implements JedisStringRepository {
+public class RedisStringClient<T extends RedisPoolConfig> extends BaseRedisClient<T> implements RedisStringApi {
 
     private T redisPoolConfig;
 
-    public JedisStringClient(T redisPoolConfig) {
+    public RedisStringClient(T redisPoolConfig) {
         super(redisPoolConfig);
         this.redisPoolConfig = redisPoolConfig;
     }

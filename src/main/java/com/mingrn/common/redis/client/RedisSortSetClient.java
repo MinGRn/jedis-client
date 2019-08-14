@@ -1,6 +1,6 @@
 package com.mingrn.common.redis.client;
 
-import com.mingrn.common.redis.client.base.BaseJedisClient;
+import com.mingrn.common.redis.client.base.BaseRedisClient;
 import com.mingrn.common.redis.config.RedisPoolConfig;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Tuple;
@@ -15,11 +15,11 @@ import java.util.Set;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 2019/8/14 10:20
  */
-public class JedisSortSetClient<T extends RedisPoolConfig> extends BaseJedisClient implements JedisSortSetRepository {
+public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T> implements RedisSortSetApi {
 
     private T redisPoolConfig;
 
-    public JedisSortSetClient(T redisPoolConfig) {
+    public RedisSortSetClient(T redisPoolConfig) {
         super(redisPoolConfig);
         this.redisPoolConfig = redisPoolConfig;
     }

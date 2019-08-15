@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Redis 基于 hash API
+ * Redis hash API
  *
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 2019/8/12 11:07

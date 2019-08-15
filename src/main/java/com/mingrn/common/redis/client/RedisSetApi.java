@@ -1,11 +1,13 @@
 package com.mingrn.common.redis.client;
 
 import com.mingrn.common.redis.client.base.BaseRedisApi;
+import redis.clients.jedis.ScanParams;
+import redis.clients.jedis.ScanResult;
 
 import java.util.Set;
 
 /**
- * Redis 基于 SET API
+ * Redis SET API
  *
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 2019-08-13 20:50
@@ -127,4 +129,31 @@ public interface RedisSetApi extends BaseRedisApi {
      * @return
      */
     Long setDiffAndStore(String destination, String... keys);
+
+    /**
+     * 迭代集合,setScan 命令同 {@link BaseRedisApi#scan(String)},
+     * 用于迭代获取成员, 初始 {@code cursor} 值应为 "0", 下次的 cursor 值
+     * 应为上次迭代返回的 cursor 值.
+     * <p>
+     * 线上应禁止使用 {@code smembers} 命令, 推荐使用 {@code scan}命令.
+     *
+     * @param key    键
+     * @param cursor 游标
+     * @return 成员集合
+     */
+    ScanResult<String> setScan(final String key, final String cursor);
+
+    /**
+     * 迭代集合,setScan 命令同 {@link BaseRedisApi#scan(String)},
+     * 用于迭代获取成员, 初始 {@code cursor} 值应为 "0", 下次的 cursor 值
+     * 应为上次迭代返回的 cursor 值
+     * <p>
+     * 线上应禁止使用 {@code smembers} 命令, 推荐使用 {@code scan}命令.
+     *
+     * @param key    键
+     * @param cursor 游标
+     * @param params 匹配模式
+     * @return 成员集合
+     */
+    ScanResult<String> setScan(final String key, final String cursor, final ScanParams params);
 }

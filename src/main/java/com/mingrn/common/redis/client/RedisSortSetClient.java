@@ -2,9 +2,7 @@ package com.mingrn.common.redis.client;
 
 import com.mingrn.common.redis.client.base.BaseRedisClient;
 import com.mingrn.common.redis.config.RedisPoolConfig;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.Tuple;
-import redis.clients.jedis.ZParams;
+import redis.clients.jedis.*;
 import redis.clients.jedis.params.sortedset.ZAddParams;
 
 import java.util.Set;
@@ -25,7 +23,7 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Long zAdd(String key, String member, double score) {
+    public Long sortSetAdd(String key, String member, double score) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -36,7 +34,7 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Long zAdd(String key, String member, double score, ZAddParams params) {
+    public Long sortSetAdd(String key, String member, double score, ZAddParams params) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -47,7 +45,7 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Long zCard(String key) {
+    public Long sortSetCard(String key) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -58,7 +56,7 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Double zScore(String key, String member) {
+    public Double sortSetScore(String key, String member) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -69,7 +67,7 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Long zRank(String key, String member, boolean reverse) {
+    public Long sortSetRank(String key, String member, boolean reverse) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -80,7 +78,7 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Long zRemove(String key, String... members) {
+    public Long sortSetRemove(String key, String... members) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -91,7 +89,7 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Double zScoreIncrBy(String key, String member, double score) {
+    public Double sortSetScoreIncrBy(String key, String member, double score) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -102,7 +100,7 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Set<String> zRange(String key, long minRank, long maxRank, boolean reversed) {
+    public Set<String> sortSetRange(String key, long minRank, long maxRank, boolean reversed) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -113,12 +111,12 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Set<String> zRangeByScore(String key, double minScore, double maxScore, boolean reversed) {
-        return zRangeByScore(key, minScore + "", maxScore + "", reversed);
+    public Set<String> sortSetRangeByScore(String key, double minScore, double maxScore, boolean reversed) {
+        return sortSetRangeByScore(key, minScore + "", maxScore + "", reversed);
     }
 
     @Override
-    public Set<String> zRangeByScore(String key, String minScore, String maxScore, boolean reversed) {
+    public Set<String> sortSetRangeByScore(String key, String minScore, String maxScore, boolean reversed) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -129,12 +127,12 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Set<String> zRangeByScore(String key, double minScore, double maxScore, boolean reversed, int offset, int count) {
-        return zRangeByScore(key, minScore + "", maxScore + "", reversed, offset, count);
+    public Set<String> sortSetRangeByScore(String key, double minScore, double maxScore, boolean reversed, int offset, int count) {
+        return sortSetRangeByScore(key, minScore + "", maxScore + "", reversed, offset, count);
     }
 
     @Override
-    public Set<String> zRangeByScore(String key, String minScore, String maxScore, boolean reversed, int offset, int count) {
+    public Set<String> sortSetRangeByScore(String key, String minScore, String maxScore, boolean reversed, int offset, int count) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -146,12 +144,12 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Set<Tuple> zRangeByScoreWithScores(String key, double minScore, double maxScore, boolean reversed) {
-        return zRangeByScoreWithScores(key, minScore + "", maxScore + "", reversed);
+    public Set<Tuple> sortSetRangeByScoreWithScores(String key, double minScore, double maxScore, boolean reversed) {
+        return sortSetRangeByScoreWithScores(key, minScore + "", maxScore + "", reversed);
     }
 
     @Override
-    public Set<Tuple> zRangeByScoreWithScores(String key, String minScore, String maxScore, boolean reversed) {
+    public Set<Tuple> sortSetRangeByScoreWithScores(String key, String minScore, String maxScore, boolean reversed) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -163,12 +161,12 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Set<Tuple> zRangeByScoreWithScores(String key, double minScore, double maxScore, int offset, int count, boolean reversed) {
-        return zRangeByScoreWithScores(key, minScore + "", maxScore + "", offset, count, reversed);
+    public Set<Tuple> sortSetRangeByScoreWithScores(String key, double minScore, double maxScore, int offset, int count, boolean reversed) {
+        return sortSetRangeByScoreWithScores(key, minScore + "", maxScore + "", offset, count, reversed);
     }
 
     @Override
-    public Set<Tuple> zRangeByScoreWithScores(String key, String minScore, String maxScore, int offset, int count, boolean reversed) {
+    public Set<Tuple> sortSetRangeByScoreWithScores(String key, String minScore, String maxScore, int offset, int count, boolean reversed) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -180,12 +178,12 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Long zCount(String key, double minScore, double maxScore) {
-        return zCount(key, minScore + "", maxScore + "");
+    public Long sortSetCount(String key, double minScore, double maxScore) {
+        return sortSetCount(key, minScore + "", maxScore + "");
     }
 
     @Override
-    public Long zCount(String key, String minScore, String maxScore) {
+    public Long sortSetCount(String key, String minScore, String maxScore) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -196,7 +194,7 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Long zRemoveRangeByRank(String key, long startRank, long endRank) {
+    public Long sortSetRemoveRangeByRank(String key, long startRank, long endRank) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -207,7 +205,7 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Long zRemoveRangeByScore(String key, double minScore, double maxScore) {
+    public Long sortSetRemoveRangeByScore(String key, double minScore, double maxScore) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -218,7 +216,7 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Long zInterStore(String destination, String... sources) {
+    public Long sortSetInterStore(String destination, String... sources) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -229,7 +227,7 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Long zInterStore(String destination, ZParams params, String... sources) {
+    public Long sortSetInterStore(String destination, ZParams params, String... sources) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -240,7 +238,7 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Long zUnionStore(String destination, String... sources) {
+    public Long sortSetUnionStore(String destination, String... sources) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
@@ -251,11 +249,33 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     }
 
     @Override
-    public Long zUnionStore(String destination, ZParams params, String... sources) {
+    public Long sortSetUnionStore(String destination, ZParams params, String... sources) {
         Jedis jedis = null;
         try {
             jedis = poolConfig.acquireResource();
             return jedis.zunionstore(destination, params, sources);
+        } finally {
+            T.releaseResource(jedis);
+        }
+    }
+
+    @Override
+    public ScanResult<Tuple> sortSetScan(String key, String cursor) {
+        Jedis jedis = null;
+        try {
+            jedis = poolConfig.acquireResource();
+            return jedis.zscan(key, cursor);
+        } finally {
+            T.releaseResource(jedis);
+        }
+    }
+
+    @Override
+    public ScanResult<Tuple> sortSetScan(String key, String cursor, ScanParams params) {
+        Jedis jedis = null;
+        try {
+            jedis = poolConfig.acquireResource();
+            return jedis.zscan(key, cursor, params);
         } finally {
             T.releaseResource(jedis);
         }

@@ -5,7 +5,7 @@ import com.mingrn.common.redis.client.base.BaseRedisApi;
 import java.util.List;
 
 /**
- * Redis 基于 List API
+ * Redis List API
  *
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 2019-08-12 21:28

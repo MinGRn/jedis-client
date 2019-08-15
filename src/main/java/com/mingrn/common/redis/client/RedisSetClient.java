@@ -3,6 +3,8 @@ package com.mingrn.common.redis.client;
 import com.mingrn.common.redis.client.base.BaseRedisClient;
 import com.mingrn.common.redis.config.RedisPoolConfig;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.ScanParams;
+import redis.clients.jedis.ScanResult;
 
 import java.util.Set;
 
@@ -159,6 +161,28 @@ public class RedisSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T
         try {
             jedis = poolConfig.acquireResource();
             return jedis.sdiffstore(destination, keys);
+        } finally {
+            T.releaseResource(jedis);
+        }
+    }
+
+    @Override
+    public ScanResult<String> setScan(String key, String cursor) {
+        Jedis jedis = null;
+        try {
+            jedis = poolConfig.acquireResource();
+            return jedis.sscan(key, cursor);
+        } finally {
+            T.releaseResource(jedis);
+        }
+    }
+
+    @Override
+    public ScanResult<String> setScan(String key, String cursor, ScanParams params) {
+        Jedis jedis = null;
+        try {
+            jedis = poolConfig.acquireResource();
+            return jedis.sscan(key, cursor, params);
         } finally {
             T.releaseResource(jedis);
         }

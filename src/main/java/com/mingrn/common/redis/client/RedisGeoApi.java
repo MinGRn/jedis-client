@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Redis 基于 GEO API 接口
+ * Redis GEO API 接口
  *
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 03/10/2018 19:27

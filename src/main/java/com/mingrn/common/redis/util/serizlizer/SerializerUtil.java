@@ -15,12 +15,12 @@ import io.protostuff.runtime.RuntimeSchema;
  * <a herf="https://www.cnblogs.com/xiaoMzjm/p/4555209.html" >比较案例</a>
  *
  * <p>使用示例:
- * <pre>{@code
+ * <pre>
  *     // 序列化
  *     byte[] bytes = SerializerUtil.serialize("Str", String.class);
  *     // 反序列化
  *     String str = SerializerUtil.deserialize(bytes, String.class);
- * }</pre>
+ * </pre>
  *
  * @author MinGRn <br > MinGRn97@gmail.com
  */

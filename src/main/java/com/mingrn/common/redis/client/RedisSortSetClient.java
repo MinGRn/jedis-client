@@ -17,21 +17,21 @@ import java.util.Set;
  */
 public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T> implements RedisSortSetApi {
 
-    private T redisPoolConfig;
+    private T poolConfig;
 
-    public RedisSortSetClient(T redisPoolConfig) {
-        super(redisPoolConfig);
-        this.redisPoolConfig = redisPoolConfig;
+    public RedisSortSetClient(T poolConfig) {
+        super(poolConfig);
+        this.poolConfig = poolConfig;
     }
 
     @Override
     public Long zAdd(String key, String member, double score) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.zadd(key, score, member);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -39,10 +39,10 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Long zAdd(String key, String member, double score, ZAddParams params) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.zadd(key, score, member, params);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -50,10 +50,10 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Long zCard(String key) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.zcard(key);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -61,10 +61,10 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Double zScore(String key, String member) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.zscore(key, member);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -72,10 +72,10 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Long zRank(String key, String member, boolean reverse) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return reverse ? jedis.zrevrank(key, member) : jedis.zrank(key, member);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -83,10 +83,10 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Long zRemove(String key, String... members) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.zrem(key, members);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -94,10 +94,10 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Double zScoreIncrBy(String key, String member, double score) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.zincrby(key, score, member);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -105,10 +105,10 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Set<String> zRange(String key, long minRank, long maxRank, boolean reversed) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return reversed ? jedis.zrevrange(key, minRank, maxRank) : jedis.zrange(key, minRank, maxRank);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -121,10 +121,10 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Set<String> zRangeByScore(String key, String minScore, String maxScore, boolean reversed) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return reversed ? jedis.zrevrangeByScore(key, maxScore, minScore) : jedis.zrangeByScore(key, minScore, maxScore);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -137,11 +137,11 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Set<String> zRangeByScore(String key, String minScore, String maxScore, boolean reversed, int offset, int count) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return reversed ? jedis.zrevrangeByScore(key, maxScore, minScore, offset, count)
                     : jedis.zrangeByScore(key, minScore, maxScore, offset, count);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -154,11 +154,11 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Set<Tuple> zRangeByScoreWithScores(String key, String minScore, String maxScore, boolean reversed) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return reversed ? jedis.zrangeByScoreWithScores(key, minScore, maxScore)
                     : jedis.zrevrangeByScoreWithScores(key, maxScore, minScore);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -171,11 +171,11 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Set<Tuple> zRangeByScoreWithScores(String key, String minScore, String maxScore, int offset, int count, boolean reversed) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return reversed ? jedis.zrangeByScoreWithScores(key, minScore, maxScore, offset, count)
                     : jedis.zrevrangeByScoreWithScores(key, maxScore, minScore, offset, count);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -188,10 +188,10 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Long zCount(String key, String minScore, String maxScore) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.zcount(key, minScore, maxScore);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -199,10 +199,10 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Long zRemoveRangeByRank(String key, long startRank, long endRank) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.zremrangeByRank(key, startRank, endRank);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -210,10 +210,10 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Long zRemoveRangeByScore(String key, double minScore, double maxScore) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.zremrangeByScore(key, minScore, maxScore);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -221,10 +221,10 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Long zInterStore(String destination, String... sources) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.zinterstore(destination, sources);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -232,10 +232,10 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Long zInterStore(String destination, ZParams params, String... sources) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.zinterstore(destination, params, sources);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -243,10 +243,10 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Long zUnionStore(String destination, String... sources) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.zunionstore(destination, sources);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -254,10 +254,10 @@ public class RedisSortSetClient<T extends RedisPoolConfig> extends BaseRedisClie
     public Long zUnionStore(String destination, ZParams params, String... sources) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.zunionstore(destination, params, sources);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 }

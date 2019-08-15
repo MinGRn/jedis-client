@@ -20,21 +20,21 @@ import java.util.Set;
  */
 public class RedisGeoClient<T extends RedisPoolConfig> extends BaseRedisClient<T> implements RedisGeoApi {
 
-    private T redisPoolConfig;
+    private T poolConfig;
 
-    public RedisGeoClient(T redisPoolConfig) {
-        super(redisPoolConfig);
-        this.redisPoolConfig = redisPoolConfig;
+    public RedisGeoClient(T poolConfig) {
+        super(poolConfig);
+        this.poolConfig = poolConfig;
     }
 
     @Override
     public Long geoAdd(String key, Double longitude, Double latitude, String member) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.geoadd(key, longitude, latitude, member);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -42,10 +42,10 @@ public class RedisGeoClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public Long geoAdd(String key, Map<String, GeoCoordinate> memberCoordinateMap) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.geoadd(key, memberCoordinateMap);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -53,7 +53,7 @@ public class RedisGeoClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public GeoCoordinate geoPos(String key, String member) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             List<GeoCoordinate> geopos = jedis.geopos(key, member);
             if (geopos.size() > 0) {
                 return geopos.get(0);
@@ -61,7 +61,7 @@ public class RedisGeoClient<T extends RedisPoolConfig> extends BaseRedisClient<T
                 return null;
             }
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -69,10 +69,10 @@ public class RedisGeoClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public List<GeoCoordinate> geoPos(String key, String... members) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.geopos(key, members);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -80,10 +80,10 @@ public class RedisGeoClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public Double geoDist(String key, String member1, String member2) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.geodist(key, member1, member2);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -91,10 +91,10 @@ public class RedisGeoClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public Double geoDist(String key, String member1, String member2, GeoUnit unit) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.geodist(key, member1, member2, unit);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -102,10 +102,10 @@ public class RedisGeoClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public List<GeoRadiusResponse> geoRadius(String key, double longitude, double latitude, double radius, GeoUnit unit) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.georadius(key, longitude, latitude, radius, unit);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -113,10 +113,10 @@ public class RedisGeoClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public List<GeoRadiusResponse> geoRadius(String key, double longitude, double latitude, double radius, GeoUnit unit, GeoRadiusParam withParam) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.georadius(key, longitude, latitude, radius, unit, withParam);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -124,10 +124,10 @@ public class RedisGeoClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public List<GeoRadiusResponse> geoRadiusByMember(String key, String member, double radius, GeoUnit unit) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.georadiusByMember(key, member, radius, unit);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -135,10 +135,10 @@ public class RedisGeoClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public List<GeoRadiusResponse> geoRadiusByMember(String key, String member, double radius, GeoUnit unit, GeoRadiusParam withParam) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.georadiusByMember(key, member, radius, unit, withParam);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -146,10 +146,10 @@ public class RedisGeoClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public List<String> geoHash(String key, String... members) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.geohash(key, members);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -157,12 +157,12 @@ public class RedisGeoClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public Set<String> geoMembers(String key, int start, int end) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.zrange(key, start, end);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 }

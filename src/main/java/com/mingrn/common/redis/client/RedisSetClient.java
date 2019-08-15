@@ -14,21 +14,21 @@ import java.util.Set;
  */
 public class RedisSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T> implements RedisSetApi {
 
-    private T redisPoolConfig;
+    private T poolConfig;
 
-    public RedisSetClient(T redisPoolConfig) {
-        super(redisPoolConfig);
-        this.redisPoolConfig = redisPoolConfig;
+    public RedisSetClient(T poolConfig) {
+        super(poolConfig);
+        this.poolConfig = poolConfig;
     }
 
     @Override
     public Long setAdd(String key, String... members) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.sadd(key, members);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -36,10 +36,10 @@ public class RedisSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public Long setRemove(String key, String... members) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.srem(key, members);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -47,10 +47,10 @@ public class RedisSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public Boolean setIsMember(String key, String member) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.sismember(key, member);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -58,10 +58,10 @@ public class RedisSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public String setPop(String key) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.spop(key);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -69,10 +69,10 @@ public class RedisSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public Set<String> setPop(String key, long count) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.spop(key, count);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -80,10 +80,10 @@ public class RedisSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public Set<String> setMembers(String key) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.smembers(key);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -91,10 +91,10 @@ public class RedisSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public Long setMove(String source, String destination, String member) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.smove(source, destination, member);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -102,10 +102,10 @@ public class RedisSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public Set<String> setInter(String... keys) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.sinter(keys);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -113,10 +113,10 @@ public class RedisSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public Set<String> setUnion(String... keys) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.sunion(keys);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -124,10 +124,10 @@ public class RedisSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public Set<String> setDiff(String... keys) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.sdiff(keys);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -135,10 +135,10 @@ public class RedisSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public Long setInterAndStore(String destination, String... keys) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.sinterstore(destination, keys);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -146,10 +146,10 @@ public class RedisSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public Long setUnionAndStore(String destination, String... keys) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.sunionstore(destination, keys);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 
@@ -157,10 +157,10 @@ public class RedisSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T
     public Long setDiffAndStore(String destination, String... keys) {
         Jedis jedis = null;
         try {
-            jedis = redisPoolConfig.acquireResource();
+            jedis = poolConfig.acquireResource();
             return jedis.sdiffstore(destination, keys);
         } finally {
-            RedisPoolConfig.releaseResource(jedis);
+            T.releaseResource(jedis);
         }
     }
 }

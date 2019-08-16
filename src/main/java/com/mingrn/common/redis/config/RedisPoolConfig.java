@@ -16,17 +16,16 @@ import java.util.logging.Logger;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 2019/5/21 10:54
  */
-public class RedisPoolConfig {
+public class RedisPoolConfig extends AbstractPoolConfig {
 
     private int port;
 
     private String host;
 
-    private JedisPool jedisPool;
-
     private static final Logger LOGGER = Logger.getLogger(RedisPoolConfig.class.getName());
 
     /** acquire redis resource */
+    @Override
     public Jedis acquireResource() {
         if (jedisPool == null) {
             throw new JedisConnectionException("Can not Get Redis Pool Resource, Please check whether the correct configuration!");
@@ -46,7 +45,8 @@ public class RedisPoolConfig {
     }
 
     /** init redis connection */
-    private void init() {
+    @Override
+    protected void init() {
         if (jedisPool == null) {
             throw new JedisConnectionException("Can't Connect Redis, Please check whether the connection configuration is correct again");
         }
@@ -54,7 +54,9 @@ public class RedisPoolConfig {
     }
 
     /** destroy redis connection */
-    private void destroy() {
+    @Override
+    public void destroy() {
+        super.destroy();
         LOGGER.info("-----------------------------Redis [host: " + host + ", port: " + port + "] Connection Has Been Successfully Destroy-----------------------------");
     }
 

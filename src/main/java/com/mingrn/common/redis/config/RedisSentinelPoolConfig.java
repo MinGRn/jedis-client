@@ -13,17 +13,16 @@ import java.util.logging.Logger;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 2019/8/15 17:43
  */
-public class RedisSentinelPoolConfig {
+public class RedisSentinelPoolConfig extends AbstractPoolConfig {
 
     private String clientName;
 
     private Set<String> sentinels;
 
-    private JedisSentinelPool jedisSentinelPool;
-
     private static final Logger LOGGER = Logger.getLogger(RedisPoolConfig.class.getName());
 
     /** acquire sentinel resource */
+    @Override
     public Jedis acquireResource() {
         if (jedisSentinelPool == null) {
             throw new JedisConnectionException("Can not Get Redis Sentinel Pool Resource, Please check whether the correct configuration!");
@@ -32,27 +31,20 @@ public class RedisSentinelPoolConfig {
         return jedisSentinelPool.getResource();
     }
 
-    /**
-     * release redis resource
-     *
-     * @param jedisSentinelPool The redis sentinel instance
-     */
-    public static void releaseResource(JedisSentinelPool jedisSentinelPool) {
-        if (jedisSentinelPool != null) {
-            jedisSentinelPool.destroy();
-        }
-    }
-
     /** init sentinel connection */
-    private void init() {
+    @Override
+    protected void init() {
         if (jedisSentinelPool == null) {
             throw new JedisConnectionException("Can't Connect Redis Sentinel, Please check whether the connection configuration is correct again");
         }
+        Jedis jedis = jedisSentinelPool.getResource();
         LOGGER.info("-----------------------------Redis Sentinel [clientName: " + clientName + ", Nodes: " + sentinels.toString() + "] Has Been Successfully Connected-----------------------------");
     }
 
     /** destroy sentinel connection */
-    private void destroy() {
+    @Override
+    public void destroy() {
+        super.destroy();
         LOGGER.info("-----------------------------Redis Sentinel [clientName: " + clientName + ", Nodes: " + sentinels.toString() + "] Connection Has Been Successfully Destroy-----------------------------");
     }
 

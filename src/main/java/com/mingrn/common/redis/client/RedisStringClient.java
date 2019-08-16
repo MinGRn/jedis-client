@@ -14,10 +14,12 @@ import java.nio.charset.StandardCharsets;
  */
 public class RedisStringClient<T extends RedisPoolConfig> extends BaseRedisClient<T> implements RedisStringApi {
 
-    private T poolConfig;
+    public RedisStringClient() {
+        super();
+    }
 
-    public RedisStringClient(T poolConfig) {
-        super(poolConfig);
+    @Override
+    public void setPoolConfig(T poolConfig) {
         this.poolConfig = poolConfig;
     }
 

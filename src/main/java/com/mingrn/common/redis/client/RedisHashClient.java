@@ -19,13 +19,14 @@ import java.util.Set;
  */
 public class RedisHashClient<T extends RedisPoolConfig> extends BaseRedisClient<T> implements RedisHashApi {
 
-    private T poolConfig;
-
-    public RedisHashClient(T poolConfig) {
-        super(poolConfig);
-        this.poolConfig = poolConfig;
+    public RedisHashClient() {
+        super();
     }
 
+    @Override
+    public void setPoolConfig(T poolConfig) {
+        this.poolConfig = poolConfig;
+    }
 
     @Override
     public long hSet(String key, String field, String val, boolean binary) {

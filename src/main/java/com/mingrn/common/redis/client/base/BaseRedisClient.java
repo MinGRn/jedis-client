@@ -14,9 +14,12 @@ import redis.clients.jedis.ScanResult;
  */
 public abstract class BaseRedisClient<T extends AbstractPoolConfig> implements BaseRedisApi {
 
-    private T poolConfig;
+    protected T poolConfig;
 
-    public BaseRedisClient(T poolConfig) {
+    public BaseRedisClient() {
+    }
+
+    public void setPoolConfig(T poolConfig) {
         this.poolConfig = poolConfig;
     }
 

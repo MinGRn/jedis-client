@@ -22,10 +22,12 @@ import java.util.Set;
 public class CommonsJedisClient<T extends AbstractPoolConfig> extends BaseRedisClient<T>
         implements BaseRedisApi, RedisStringApi, RedisGeoApi, RedisHashApi, RedisSetApi, RedisSortSetApi {
 
-    private T poolConfig;
+    public CommonsJedisClient() {
+        super();
+    }
 
-    public CommonsJedisClient(T poolConfig) {
-        super(poolConfig);
+    @Override
+    public void setPoolConfig(T poolConfig) {
         this.poolConfig = poolConfig;
     }
 

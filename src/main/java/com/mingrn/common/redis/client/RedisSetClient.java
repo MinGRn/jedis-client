@@ -16,10 +16,12 @@ import java.util.Set;
  */
 public class RedisSetClient<T extends RedisPoolConfig> extends BaseRedisClient<T> implements RedisSetApi {
 
-    private T poolConfig;
+    public RedisSetClient() {
+        super();
+    }
 
-    public RedisSetClient(T poolConfig) {
-        super(poolConfig);
+    @Override
+    public void setPoolConfig(T poolConfig) {
         this.poolConfig = poolConfig;
     }
 

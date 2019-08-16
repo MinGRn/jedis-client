@@ -15,10 +15,12 @@ import java.util.List;
  */
 public class RedisListClient<T extends RedisPoolConfig> extends BaseRedisClient<T> implements RedisListApi {
 
-    private T poolConfig;
+    public RedisListClient() {
+        super();
+    }
 
-    public RedisListClient(T poolConfig) {
-        super(poolConfig);
+    @Override
+    public void setPoolConfig(T poolConfig) {
         this.poolConfig = poolConfig;
     }
 

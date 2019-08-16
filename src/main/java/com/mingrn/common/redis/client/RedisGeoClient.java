@@ -20,10 +20,13 @@ import java.util.Set;
  */
 public class RedisGeoClient<T extends RedisPoolConfig> extends BaseRedisClient<T> implements RedisGeoApi {
 
-    private T poolConfig;
 
-    public RedisGeoClient(T poolConfig) {
-        super(poolConfig);
+    public RedisGeoClient() {
+        super();
+    }
+
+    @Override
+    public void setPoolConfig(T poolConfig) {
         this.poolConfig = poolConfig;
     }
 

@@ -1,5 +1,6 @@
 package com.mingrn.common.redis.client.base;
 
+import com.mingrn.common.redis.config.AbstractPoolConfig;
 import com.mingrn.common.redis.config.RedisPoolConfig;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.ScanParams;
@@ -11,7 +12,7 @@ import redis.clients.jedis.ScanResult;
  * @author MinGRn <br > MinGRn97@gmail.com
  * @date 03/10/2018 19:28
  */
-public abstract class BaseRedisClient<T extends RedisPoolConfig> implements BaseRedisApi {
+public abstract class BaseRedisClient<T extends AbstractPoolConfig> implements BaseRedisApi {
 
     private T poolConfig;
 

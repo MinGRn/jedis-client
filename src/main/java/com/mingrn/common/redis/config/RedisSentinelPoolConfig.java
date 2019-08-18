@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  */
 public class RedisSentinelPoolConfig extends AbstractPoolConfig {
 
-    private String clientName;
+    private String masterName;
 
     private Set<String> sentinels;
 
@@ -27,7 +27,6 @@ public class RedisSentinelPoolConfig extends AbstractPoolConfig {
         if (jedisSentinelPool == null) {
             throw new JedisConnectionException("Can not Get Redis Sentinel Pool Resource, Please check whether the correct configuration!");
         }
-        jedisSentinelPool.getCurrentHostMaster();
         return jedisSentinelPool.getResource();
     }
 
@@ -37,15 +36,14 @@ public class RedisSentinelPoolConfig extends AbstractPoolConfig {
         if (jedisSentinelPool == null) {
             throw new JedisConnectionException("Can't Connect Redis Sentinel, Please check whether the connection configuration is correct again");
         }
-        Jedis jedis = jedisSentinelPool.getResource();
-        LOGGER.info("-----------------------------Redis Sentinel [clientName: " + clientName + ", Nodes: " + sentinels.toString() + "] Has Been Successfully Connected-----------------------------");
+        LOGGER.info("-----------------------------Redis Sentinel [masterName: " + masterName + ", Nodes: " + sentinels.toString() + "] Has Been Successfully Connected-----------------------------");
     }
 
     /** destroy sentinel connection */
     @Override
     public void destroy() {
         super.destroy();
-        LOGGER.info("-----------------------------Redis Sentinel [clientName: " + clientName + ", Nodes: " + sentinels.toString() + "] Connection Has Been Successfully Destroy-----------------------------");
+        LOGGER.info("-----------------------------Redis Sentinel [masterName: " + masterName + ", Nodes: " + sentinels.toString() + "] Connection Has Been Successfully Destroy-----------------------------");
     }
 
     //---------------------------------------------------Below Is The Constructor-------------------------------------------------------------
@@ -97,7 +95,7 @@ public class RedisSentinelPoolConfig extends AbstractPoolConfig {
     public RedisSentinelPoolConfig(String masterName, Set<String> sentinels,
                                    final GenericObjectPoolConfig poolConfig, final int connectionTimeout,
                                    final int soTimeout, final String password, final int database, final String clientName) {
-        this.clientName = clientName;
+        this.masterName = masterName;
         this.sentinels = sentinels;
         this.jedisSentinelPool = new JedisSentinelPool(masterName, sentinels, poolConfig, connectionTimeout, soTimeout, password, database, clientName);
     }

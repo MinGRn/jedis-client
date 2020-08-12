@@ -38,6 +38,9 @@ public class RedisLock {
     private static final String SET_IF_NOT_EXIST = "NX";
     private static final String SET_WITH_EXPIRE_TIME = "PX";
 
+    private static final String SECURITY_DEL_LUA_SCRIPT
+            = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+
     private static final Logger LOGGER = Logger.getLogger(RedisLock.class.getName());
 
     public RedisLock(final JedisPool jedisPool) {
@@ -112,8 +115,7 @@ public class RedisLock {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
-            String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
-            result = jedis.eval(script, Collections.singletonList(lockKey), Collections.singletonList(requestId));
+            result = jedis.eval(SECURITY_DEL_LUA_SCRIPT, Collections.singletonList(lockKey), Collections.singletonList(requestId));
         } catch (JedisException e) {
             LOGGER.log(Level.WARNING, "Jedis Release Distributed Err", e);
         } finally {
